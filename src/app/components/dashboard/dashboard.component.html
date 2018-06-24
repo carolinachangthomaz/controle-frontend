@@ -6,7 +6,7 @@
   <div class="col-xs-4">
      <div class="small-box bg-green">
         <div class="inner">
-            <h3>RS 10</h3>
+            <h3>{{ sumario.credito }}</h3>
             <p>Total créditos</p>
         </div>
         <div class="icon">
@@ -17,7 +17,7 @@
   <div class="col-xs-4">
       <div class="small-box bg-red">
          <div class="inner">
-             <h3>RS 10</h3>
+             <h3>{{ sumario.debito }}</h3>
              <p>Total débitos</p>
          </div>
          <div class="icon">
@@ -28,7 +28,7 @@
    <div class="col-xs-4">
       <div class="small-box bg-blue">
          <div class="inner">
-             <h3>RS 10</h3>
+             <h3>{{ sumario.credito - sumario.debito}}</h3>
              <p>Saldo</p>
          </div>
          <div class="icon">

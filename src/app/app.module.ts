@@ -7,6 +7,8 @@ import { MenuComponent } from './components/menu/menu.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { routes } from './app.routes';
+import { DashboardService } from './services/dashboard.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,9 +20,10 @@ import { routes } from './app.routes';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     routes
   ],
-  providers: [],
+  providers: [DashboardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
