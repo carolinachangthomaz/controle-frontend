@@ -9,6 +9,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { routes } from './app.routes';
 import { DashboardService } from './services/dashboard.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CicloPagamentoComponent } from './components/ciclo-pagamento/ciclo-pagamento.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     MenuComponent,
     FooterComponent,
-    DashboardComponent
+    DashboardComponent,
+    CicloPagamentoComponent
   ],
   imports: [
     BrowserModule,
