@@ -11,6 +11,7 @@ import { DashboardService } from './services/dashboard.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CicloPagamentoComponent } from './components/ciclo-pagamento/ciclo-pagamento.component';
 import { FormsModule } from '@angular/forms';
+import { CicloPagamentoService } from './services/ciclo-pagamento.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     routes
   ],
-  providers: [DashboardService],
+  providers: [DashboardService,CicloPagamentoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

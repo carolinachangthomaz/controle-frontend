@@ -3,7 +3,7 @@
       <div class="box-header with-border">
         <h3 class="box-title">Ciclo Pagamento</h3>
       </div>
-      <form class="form-horizontal" #form="ngForm" (ngSubmit)="incluir()" novalidate>
+      <form class="form-horizontal" #form="ngForm"  novalidate>
         <div [ngClass]="classCss" role="alert" *ngIf="message">
                    <strong>{{ message.text }}</strong>
         </div>
@@ -82,23 +82,23 @@
                       <th>Nome</th>
                       <th>Valor</th>
                     </tr>
-                    <tr *ngFor="let ciclo of ciclo.creditos">
+                    <tr *ngFor="let cred of ciclo.creditos; let i = index; ">
                       <td>
                           <input style="width: 140px;"
                           type="text"
-                          [(ngModel)]="ciclo.nome"
+                          [(ngModel)]="ciclo.creditos[i].nome"
                           class="form-control" 
                           #cicloNome="ngModel">
                       </td>
                       <td>
                           <input style="width: 140px;"
                           type="number"
-                          [(ngModel)]="ciclo.valor"
+                           [(ngModel)]="ciclo.creditos[i].valor"
                           class="form-control" 
-                          #cicloValor="ngModel">
+                          #credValor="ngModel">
                       </td>
                       <td class="table-actions">
-                         <button class="btn btn-success" (click)="addCreditos(ciclo)">
+                         <button class="btn btn-success" (click)="addCreditos(this)">
                            <i class="fa fa-plus"></i>
                          </button>
                          <button class="btn btn-warning">
@@ -122,13 +122,15 @@
                         <td>
                             <input style="width: 140px;"
                             type="text" 
+                            name="{{nome}}"
                             [(ngModel)]="deb.nome"
-                            class="form-control" 
+                             class="form-control" 
                             #debNome="ngModel">
                         </td>
                         <td>
                             <input style="width: 140px;"
                             type="number" 
+                            name="{{deb.valor}}"
                             [(ngModel)]="deb.valor"
                             class="form-control" 
                             #debValor="ngModel">
@@ -136,6 +138,7 @@
                         <td>
                             <input style="width: 140px;"
                             type="text" 
+                            name="{{deb.status}}"
                             [(ngModel)]="deb.status"
                             class="form-control" 
                             #debStatus="ngModel">
@@ -158,7 +161,7 @@
           </div>
 
         <div class="box-footer">
-          <button type="submit" [disabled]="!form.valid" class="btn btn-info pull-right">Incluir</button>
+          <button type="submit"  (click)="registrar()" [disabled]="!form.valid" class="btn btn-info pull-right">Incluir</button>
         </div>
       </form>
     </div>

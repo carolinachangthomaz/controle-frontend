@@ -1,6 +1,7 @@
 import { Ciclo } from './../../model/ciclo.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 
 @Component({
   selector: 'app-ciclo-pagamento',
@@ -16,7 +17,7 @@ export class CicloPagamentoComponent implements OnInit {
   classCss: {};
   ciclo = new Ciclo('',null,null);
 
-  constructor() {
+  constructor(private cicloService: CicloPagamentoService) {
     this.ciclo.creditos = [{}],
     this.ciclo.debitos = [{}]
    }
@@ -25,21 +26,34 @@ export class CicloPagamentoComponent implements OnInit {
    
   }
 
-
-  incluir(){
-
-  }
-
-  addCreditos(creditos){
-   // console.log("antes" ,ciclo);
-    this.ciclo.creditos.splice(creditos + 1, 0, {});
-  
+  addCreditos(cred){
+   console.log("antes" ,cred);
+    this.ciclo.creditos.splice(cred + 1, 0, {});
+    console.log("depois" ,this.ciclo.creditos);
   }
 
   addDebitos(deb){
     //console.log("antes" ,ciclo);
     this.ciclo.debitos.splice(deb + 1, 0, {});
+  }
+
+  registrar(){
+    console.log("registrar", this.ciclo);
+   
+    var indexCredito = this.ciclo.creditos[0];
+    this.ciclo.creditos.splice(indexCredito, 1);
   
+    var indexDebito = this.ciclo.debitos[0];
+    this.ciclo.debitos.splice(indexDebito, 1);
+  
+   this.cicloService.create(this.ciclo).subscribe((obj: Ciclo) => {
+    console.log("FUNCIONOU" ,obj);
+  },err =>{
+     this.showMessage({
+       type: 'error',
+       text: err['error']['errors'][0]
+     });
+  });
   }
 
   private showMessage(message: {type: string, text: string}) : void{
