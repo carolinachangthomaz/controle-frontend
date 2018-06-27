@@ -26,6 +26,18 @@ export class CicloPagamentoComponent implements OnInit {
    
   }
 
+  refresh(){
+    this.cicloService.refresh().subscribe((response: Ciclo) => {
+      this.ciclo = new Ciclo('',null,null);
+      this.ciclo = response;
+    },err =>{
+       this.showMessage({
+         type: 'error',
+         text: err['error']['errors'][0]
+       });
+    });
+  }
+
   addCreditos(cred){
     //console.log("antes" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, {});
@@ -38,7 +50,7 @@ export class CicloPagamentoComponent implements OnInit {
   }
 
   registrar(){
-    console.log("registrar", this.ciclo);
+    //console.log("registrar", this.ciclo);
     var indexCredito = this.ciclo.creditos[0];
     this.ciclo.creditos.splice(indexCredito, 1);
   
@@ -47,6 +59,7 @@ export class CicloPagamentoComponent implements OnInit {
   
    this.cicloService.create(this.ciclo).subscribe((obj: Ciclo) => {
     console.log("FUNCIONOU" ,obj);
+    this.refresh();
   },err =>{
      this.showMessage({
        type: 'error',

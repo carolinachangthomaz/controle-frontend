@@ -8,6 +8,10 @@ export class CicloPagamentoService {
 
   constructor(private http:HttpClient) { }
 
+  refresh(){
+    return this.http.get(`${APP_CONFIG.baseUrl}/ciclodepagamento`);
+  }
+
   create(ciclo: Ciclo){
     return this.http.post(`${APP_CONFIG.baseUrl}/ciclodepagamento`, ciclo);
   }
