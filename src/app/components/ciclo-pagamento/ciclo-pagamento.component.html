@@ -1,3 +1,167 @@
-<p>
-  ciclo-pagamento works!
-</p>
+<div class="col-md-12" style="margin-left: 0%">
+    <div class="box box-warning">
+      <div class="box-header with-border">
+        <h3 class="box-title">Ciclo Pagamento</h3>
+      </div>
+      <form class="form-horizontal" #form="ngForm" (ngSubmit)="incluir()" novalidate>
+        <div [ngClass]="classCss" role="alert" *ngIf="message">
+                   <strong>{{ message.text }}</strong>
+        </div>
+
+        <div class="box-body">
+          <div class="row">
+              <div class="col-xs-4">
+                <label for="inputNome" class="col-sm-2 control-label">Nome</label>
+              </div>
+              <div class="col-xs-4">
+                <label for="inputMes" class="col-sm-2 control-label">Mês</label>
+             </div>
+             <div class="col-xs-4">
+                 <label for="inputAno" class="col-sm-2 control-label">Ano</label>
+             </div>
+          </div>
+        </div>
+
+        <div class="box-body">
+          <div class="row">
+            <div class="col-xs-4">
+                  <input 
+                        type="text" 
+                        [(ngModel)]="ciclo.nome"
+                        class="form-control" 
+                        name="nome"
+                        id="inputNome" 
+                        #nome="ngModel"
+                        placeholder="Nome"
+                        required>
+                  <span class="help-block" *ngIf="nome.invalid && nome.dirty">Nome Obrigatória</span>
+            </div>
+            <div class="col-xs-4">
+                <input 
+                      type="text" 
+                      [(ngModel)]="ciclo.mes"
+                      class="form-control" 
+                      name="mes"
+                      id="inputMes" 
+                      #mes="ngModel"
+                      placeholder="Mês"
+                      required>
+                <span class="help-block" *ngIf="mes.invalid && mes.dirty">Nome Obrigatório</span>
+            </div>
+            <div class="col-xs-4">
+                <input 
+                      type="text" 
+                      [(ngModel)]="ciclo.ano"
+                      class="form-control" 
+                      name="mes"
+                      id="inputAno" 
+                      #ano="ngModel"
+                      placeholder="Ano"
+                      required>
+                <span class="help-block" *ngIf="ano.invalid && ano.dirty">Ano Obrigatório</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+              <div class="col-xs-6">
+                  <label for="inputCreditos" class="col-sm-2 control-label">Créditos</label>
+              </div>
+              <div class="col-xs-6">
+                  <label for="inputDébitos" class="col-sm-2 control-label">Débitos</label>
+                </div>
+            </div>
+        </div>  
+        
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6">
+                  <table class="table table-bordered">
+                    <tr>
+                      <th>Nome</th>
+                      <th>Valor</th>
+                    </tr>
+                    <tr *ngFor="let ciclo of ciclo.creditos">
+                      <td>
+                          <input style="width: 140px;"
+                          type="text"
+                          [(ngModel)]="ciclo.nome"
+                          class="form-control" 
+                          #cicloNome="ngModel">
+                      </td>
+                      <td>
+                          <input style="width: 140px;"
+                          type="number"
+                          [(ngModel)]="ciclo.valor"
+                          class="form-control" 
+                          #cicloValor="ngModel">
+                      </td>
+                      <td class="table-actions">
+                         <button class="btn btn-success" (click)="addCreditos(ciclo)">
+                           <i class="fa fa-plus"></i>
+                         </button>
+                         <button class="btn btn-warning">
+                            <i class="fa fa-clone"></i>
+                          </button>
+                          <button class="btn btn-danger">
+                              <i class="fa fa-trash-o"></i>
+                            </button>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-xs-6">
+                    <table class="table table-bordered">
+                      <tr>
+                        <th>Nome</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                      </tr>
+                      <tr *ngFor="let deb of ciclo.debitos">
+                        <td>
+                            <input style="width: 140px;"
+                            type="text" 
+                            [(ngModel)]="deb.nome"
+                            class="form-control" 
+                            #debNome="ngModel">
+                        </td>
+                        <td>
+                            <input style="width: 140px;"
+                            type="number" 
+                            [(ngModel)]="deb.valor"
+                            class="form-control" 
+                            #debValor="ngModel">
+                        </td>
+                        <td>
+                            <input style="width: 140px;"
+                            type="text" 
+                            [(ngModel)]="deb.status"
+                            class="form-control" 
+                            #debStatus="ngModel">
+                        </td>
+                        <td class="table-actions">
+                            <button class="btn btn-success" (click)="addDebitos(deb)">
+                              <i class="fa fa-plus"></i>
+                            </button>
+                            <button class="btn btn-warning">
+                               <i class="fa fa-clone"></i>
+                             </button>
+                             <button class="btn btn-danger">
+                                 <i class="fa fa-trash-o"></i>
+                               </button>
+                         </td>
+                      </tr>
+                    </table>
+                  </div>
+            </div>
+          </div>
+
+        <div class="box-footer">
+          <button type="submit" [disabled]="!form.valid" class="btn btn-info pull-right">Incluir</button>
+        </div>
+      </form>
+    </div>
+</div>
+
+

@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { DashboardService } from './services/dashboard.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CicloPagamentoComponent } from './components/ciclo-pagamento/ciclo-pagamento.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CicloPagamentoComponent } from './components/ciclo-pagamento/ciclo-paga
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
     routes
   ],
