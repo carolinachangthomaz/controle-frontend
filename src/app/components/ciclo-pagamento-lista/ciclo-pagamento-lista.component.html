@@ -1,0 +1,27 @@
+<div class="box-body">
+  <table class="table" style="background-color: white">
+     <thead>
+       <tr>
+         <th>Nome</th>
+         <th>Mês</th>
+         <th>Ano</th>
+         <th>Ações</th>
+       </tr>
+     </thead>
+     <tbody>
+        <tr *ngFor="let c of ciclos">
+            <td>{{c.nome}}</td>
+            <td>{{c.mes}}</td>
+            <td>{{c.ano}}</td>
+            <td style="width: 140px">
+                <button class="btn btn-warning" (click)="visualizar(c._id)">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </td>
+        </tr>
+     </tbody>
+  </table>
+</div>

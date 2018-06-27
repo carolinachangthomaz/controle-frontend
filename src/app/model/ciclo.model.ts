@@ -1,10 +1,11 @@
 export class Ciclo{
+    _id: string;
     nome: String;
     mes: Number;
     ano: Number;
     creditos=[];
     debitos=[];
     
-constructor(nome: String, mes: Number, ano: Number){}    
+constructor(id: string, nome: String, mes: Number, ano: Number){}    
 
 }

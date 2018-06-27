@@ -2,6 +2,7 @@ import { Ciclo } from './../../model/ciclo.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ciclo-pagamento',
@@ -15,27 +16,19 @@ export class CicloPagamentoComponent implements OnInit {
   
   message: {};
   classCss: {};
-  ciclo = new Ciclo('',null,null);
+  ciclo = new Ciclo('','',null,null);
 
-  constructor(private cicloService: CicloPagamentoService) {
+  constructor(private cicloService: CicloPagamentoService,
+              private route: ActivatedRoute) {
     this.ciclo.creditos = [{}],
     this.ciclo.debitos = [{}]
    }
 
   ngOnInit() {
-   
-  }
-
-  refresh(){
-    this.cicloService.refresh().subscribe((response: Ciclo) => {
-      this.ciclo = new Ciclo('',null,null);
-      this.ciclo = response;
-    },err =>{
-       this.showMessage({
-         type: 'error',
-         text: err['error']['errors'][0]
-       });
-    });
+    let id : string = this.route.snapshot.params['id'];
+    if(id != undefined){
+      this.findById(id);
+    }
   }
 
   addCreditos(cred){
@@ -58,8 +51,7 @@ export class CicloPagamentoComponent implements OnInit {
     this.ciclo.debitos.splice(indexDebito, 1);
   
    this.cicloService.create(this.ciclo).subscribe((obj: Ciclo) => {
-    console.log("FUNCIONOU" ,obj);
-    this.refresh();
+    console.log("create" ,obj);
   },err =>{
      this.showMessage({
        type: 'error',
@@ -67,6 +59,20 @@ export class CicloPagamentoComponent implements OnInit {
      });
   });
    
+  }
+
+  findById(id: string){
+    this.cicloService.findById(id).subscribe((obj: Ciclo) => {
+      this.ciclo = obj;
+      this.ciclo.creditos.push({});
+      this.ciclo.debitos.push({});
+      console.log("findById" ,obj);
+    },err =>{
+       this.showMessage({
+         type: 'error',
+         text: err['error']['errors'][0]
+       });
+    });
   }
 
   private showMessage(message: {type: string, text: string}) : void{
