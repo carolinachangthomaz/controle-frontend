@@ -27,9 +27,9 @@ export class CicloPagamentoComponent implements OnInit {
   }
 
   addCreditos(cred){
-   console.log("antes" ,cred);
+    //console.log("antes" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, {});
-    console.log("depois" ,this.ciclo.creditos);
+    //console.log("depois" ,this.ciclo.creditos);
   }
 
   addDebitos(deb){
@@ -39,7 +39,6 @@ export class CicloPagamentoComponent implements OnInit {
 
   registrar(){
     console.log("registrar", this.ciclo);
-   
     var indexCredito = this.ciclo.creditos[0];
     this.ciclo.creditos.splice(indexCredito, 1);
   
@@ -54,6 +53,7 @@ export class CicloPagamentoComponent implements OnInit {
        text: err['error']['errors'][0]
      });
   });
+   
   }
 
   private showMessage(message: {type: string, text: string}) : void{

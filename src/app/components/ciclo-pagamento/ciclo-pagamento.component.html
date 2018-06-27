@@ -82,23 +82,25 @@
                       <th>Nome</th>
                       <th>Valor</th>
                     </tr>
-                    <tr *ngFor="let cred of ciclo.creditos; let i = index; ">
+                    <tr *ngFor="let cred of ciclo.creditos">
                       <td>
                           <input style="width: 140px;"
                           type="text"
-                          [(ngModel)]="ciclo.creditos[i].nome"
-                          class="form-control" 
-                          #cicloNome="ngModel">
+                          [(ngModel)]="cred.nome"
+                          class="form-control"
+                          [ngModelOptions]="{standalone: true}" 
+                          ngModel>
                       </td>
                       <td>
                           <input style="width: 140px;"
                           type="number"
-                           [(ngModel)]="ciclo.creditos[i].valor"
-                          class="form-control" 
-                          #credValor="ngModel">
+                          [(ngModel)]="cred.valor"
+                          class="form-control"
+                          [ngModelOptions]="{standalone: true}"
+                          ngModel>
                       </td>
                       <td class="table-actions">
-                         <button class="btn btn-success" (click)="addCreditos(this)">
+                         <button class="btn btn-success" (click)="addCreditos(cred)">
                            <i class="fa fa-plus"></i>
                          </button>
                          <button class="btn btn-warning">
@@ -122,26 +124,26 @@
                         <td>
                             <input style="width: 140px;"
                             type="text" 
-                            name="{{nome}}"
                             [(ngModel)]="deb.nome"
-                             class="form-control" 
-                            #debNome="ngModel">
+                            class="form-control" 
+                            [ngModelOptions]="{standalone: true}"
+                            ngModel>
                         </td>
                         <td>
                             <input style="width: 140px;"
                             type="number" 
-                            name="{{deb.valor}}"
                             [(ngModel)]="deb.valor"
                             class="form-control" 
-                            #debValor="ngModel">
+                            [ngModelOptions]="{standalone: true}"
+                            ngModel>
                         </td>
                         <td>
                             <input style="width: 140px;"
                             type="text" 
-                            name="{{deb.status}}"
                             [(ngModel)]="deb.status"
                             class="form-control" 
-                            #debStatus="ngModel">
+                            [ngModelOptions]="{standalone: true}"
+                            ngModel>
                         </td>
                         <td class="table-actions">
                             <button class="btn btn-success" (click)="addDebitos(deb)">
