@@ -53,15 +53,9 @@ export class CicloPagamentoComponent implements OnInit {
       this.sumario.credito = cred;
       this.sumario.debito = deb;
       this.total = this.sumario.credito - this.sumario.debito;
-     // this.myFunction();
+      this.formatDouble();
     }
   }
-
- myFunction() {
-   document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
-    document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
-    document.getElementById("total").innerHTML = this.total.toFixed(2);
-}
 
   addCreditos(cred){
     //console.log("antes" ,cred);
@@ -112,7 +106,6 @@ export class CicloPagamentoComponent implements OnInit {
 
 
   createOrUpdate(){
-    console.log("createorupdate >>>>>>>>>>>>>>>>>> ", this.ciclo);
     var indexCredito = this.ciclo.creditos[0];
     this.ciclo.creditos.splice(indexCredito, 1);
   
@@ -121,6 +114,7 @@ export class CicloPagamentoComponent implements OnInit {
   
    this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
     console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
+    this.findById(obj._id);
   },err =>{
      this.showMessage({
        type: 'error',
@@ -132,15 +126,24 @@ export class CicloPagamentoComponent implements OnInit {
 
   findById(id: string){
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
+      let creditos = [{}];
+      let debitos = [{}];
       this.ciclo._id = obj._id;
       this.ciclo.nome = obj.nome;
       this.ciclo.mes = obj.mes;
       this.ciclo.ano =obj.ano;
-      this.ciclo.creditos = obj.creditos;
-      this.ciclo.debitos = obj.debitos;
-      this.ciclo.creditos.push({});
-      this.ciclo.debitos.push({});
-      console.log("findById" , this.ciclo);
+      
+      obj.creditos.forEach(function(obj, value){
+        creditos.push(obj);
+      })
+      obj.debitos.forEach(function(obj, value){
+        debitos.push(obj);
+      })
+
+      this.ciclo.creditos = creditos;
+      this.ciclo.debitos = debitos;
+      
+      
       this.calculadora();
     },err =>{
        this.showMessage({
@@ -167,5 +170,10 @@ export class CicloPagamentoComponent implements OnInit {
     this.classCss['alert-'+type] = true;
   }
 
-  
+  formatDouble() {
+    document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
+     document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
+     document.getElementById("total").innerHTML = this.total.toFixed(2);
+ }
+
 }
