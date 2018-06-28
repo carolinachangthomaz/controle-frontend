@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { ActivatedRoute } from '@angular/router';
+import { Sumario } from '../../model/sumario.model';
 
 @Component({
   selector: 'app-ciclo-pagamento',
@@ -17,6 +18,8 @@ export class CicloPagamentoComponent implements OnInit {
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
+  sumario = new Sumario(null,null); 
+  total: Number;
 
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute) {
@@ -31,6 +34,35 @@ export class CicloPagamentoComponent implements OnInit {
     }
   }
 
+  calculadora(){
+    this.sumario.credito = 0;
+    this.sumario.debito = 0;
+    let cred = 0;
+    let deb = 0;
+
+    if(this.ciclo != null){
+      this.ciclo.creditos.forEach(function({valor}){
+        console.log(valor);
+        cred += !valor || isNaN(valor) ? 0 : parseFloat(valor);
+      })
+
+      this.ciclo.debitos.forEach(function({valor}){
+        deb += !valor || isNaN(valor) ? 0 : parseFloat(valor);
+      })
+
+      this.sumario.credito = cred;
+      this.sumario.debito = deb;
+      this.total = this.sumario.credito - this.sumario.debito;
+     // this.myFunction();
+    }
+  }
+
+ myFunction() {
+   document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
+    document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
+    document.getElementById("total").innerHTML = this.total.toFixed(2);
+}
+
   addCreditos(cred){
     //console.log("antes" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, {});
@@ -44,6 +76,7 @@ export class CicloPagamentoComponent implements OnInit {
       var index = this.ciclo.creditos.indexOf(cred);
       if (index > -1) {
         this.ciclo.creditos.splice(index, 1);
+        this.calculadora();
       }
     }  
   }
@@ -53,6 +86,7 @@ export class CicloPagamentoComponent implements OnInit {
   cloneCreditos(cred){
     //console.log("antes" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, cred);
+    this.calculadora();
     //console.log("depois" ,this.ciclo.creditos);
   }
 
@@ -66,12 +100,14 @@ export class CicloPagamentoComponent implements OnInit {
     var index = this.ciclo.debitos.indexOf(deb);
     if (index > -1) {
       this.ciclo.debitos.splice(index, 1);
+      this.calculadora();
     }
   }
   
   cloneDebitos(deb){
     //console.log("antes" ,ciclo);
     this.ciclo.creditos.splice(deb + 1, 0, deb);
+    this.calculadora();
   }
 
 
@@ -105,6 +141,7 @@ export class CicloPagamentoComponent implements OnInit {
       this.ciclo.creditos.push({});
       this.ciclo.debitos.push({});
       console.log("findById" , this.ciclo);
+      this.calculadora();
     },err =>{
        this.showMessage({
          type: 'error',
@@ -112,6 +149,8 @@ export class CicloPagamentoComponent implements OnInit {
        });
     });
   }
+
+  
 
   private showMessage(message: {type: string, text: string}) : void{
     this.message = message;

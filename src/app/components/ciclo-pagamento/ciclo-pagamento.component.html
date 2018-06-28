@@ -3,6 +3,45 @@
       <div class="box-header with-border">
         <h3 class="box-title">Ciclo Pagamento</h3>
       </div>
+
+      <div class="box-body">
+          <div class="row">
+              <div class="col-xs-4">
+                  <div class="small-box bg-green">
+                     <div class="inner">
+                         <h3>{{ sumario.credito }}</h3>
+                         <p>Total créditos</p>
+                     </div>
+                     <div class="icon">
+                         <i class="fa fa-bank"></i>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xs-4">
+                   <div class="small-box bg-red">
+                      <div class="inner">
+                          <h3>{{ sumario.debito }}</h3>
+                          <p>Total débitos</p>
+                      </div>
+                      <div class="icon">
+                          <i class="fa fa-credit-card"></i>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-xs-4">
+                   <div class="small-box bg-blue">
+                      <div class="inner">
+                          <h3>{{ total }}</h3>
+                          <p>Saldo</p>
+                      </div>
+                      <div class="icon">
+                          <i class="fa fa-money"></i>
+                      </div>
+                   </div>
+                </div>
+          </div>
+      </div>       
+
       <form class="form-horizontal" #form="ngForm"  novalidate>
         <div [ngClass]="classCss" role="alert" *ngIf="message">
                    <strong>{{ message.text }}</strong>
@@ -92,7 +131,7 @@
                           ngModel>
                       </td>
                       <td>
-                          <input style="width: 120px;"
+                          <input style="width: 120px;" (change)="calculadora()"
                           type="number"
                           [(ngModel)]="cred.valor"
                           class="form-control"
@@ -130,7 +169,7 @@
                             ngModel>
                         </td>
                         <td>
-                            <input style="width: 120px;"
+                            <input style="width: 120px;" (change)="calculadora()"
                             type="number" 
                             [(ngModel)]="deb.valor"
                             class="form-control" 
