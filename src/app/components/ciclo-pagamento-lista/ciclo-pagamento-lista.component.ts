@@ -20,15 +20,15 @@ export class CicloPagamentoListaComponent implements OnInit {
    }
 
   ngOnInit() {
-   this.refresh();
+   this.findAll();
   }
 
   visualizar(id: string){
     this.router.navigate(['/ciclo-pagamento',id]);
   }
 
-  refresh(){
-    this.cicloService.refresh().subscribe((response) => {
+  findAll(){
+    this.cicloService.findAll().subscribe((response) => {
       
       this.ciclos = response;
       console.log(this.ciclos);
@@ -38,6 +38,22 @@ export class CicloPagamentoListaComponent implements OnInit {
          text: err['error']['errors'][0]
        });
     });
+  }
+
+  delete(id: string){
+    this.message = {};
+        this.cicloService.delete(id).subscribe((obj: Ciclo) => {
+          this.showMessage({
+             type: 'success',
+             text: 'Ticket excluído'
+          });
+          this.findAll();
+        }, err =>{
+          this.showMessage({
+            type: 'error',
+            text: err['error']['errors'][0]
+          });
+        })
   }
 
   private showMessage(message: {type: string, text: string}) : void{

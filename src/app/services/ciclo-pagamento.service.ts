@@ -9,7 +9,7 @@ export class CicloPagamentoService {
 
   constructor(private http:HttpClient) { }
 
-  refresh(): Observable<Ciclo[]>{
+  findAll(): Observable<Ciclo[]>{
     return this.http.get<Ciclo[]>(`${APP_CONFIG.baseUrl}/ciclodepagamento`);
   }
 
@@ -24,6 +24,10 @@ export class CicloPagamentoService {
 
   findById(id: string){
     return this.http.get(`${APP_CONFIG.baseUrl}/ciclodepagamento/${id}`);
+  }
+
+  delete(id: string){
+    return this.http.delete(`${APP_CONFIG.baseUrl}/ciclodepagamento/${id}`);
   }
   
 
