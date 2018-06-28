@@ -103,10 +103,10 @@
                          <button class="btn btn-success" (click)="addCreditos(cred)">
                            <i class="fa fa-plus"></i>
                          </button>
-                         <button class="btn btn-warning">
+                         <button class="btn btn-warning" (click)="cloneCreditos(cred)">
                             <i class="fa fa-clone"></i>
                           </button>
-                          <button class="btn btn-danger">
+                          <button class="btn btn-danger" (click)="removeCreditos(cred)">
                               <i class="fa fa-trash-o"></i>
                             </button>
                       </td>
@@ -149,10 +149,10 @@
                             <button class="btn btn-success" (click)="addDebitos(deb)">
                               <i class="fa fa-plus"></i>
                             </button>
-                            <button class="btn btn-warning">
+                            <button class="btn btn-warning" (click)="cloneDebitos(deb)">
                                <i class="fa fa-clone"></i>
                              </button>
-                             <button class="btn btn-danger">
+                             <button class="btn btn-danger" (click)="removeDebitos(deb)">
                                  <i class="fa fa-trash-o"></i>
                                </button>
                          </td>
@@ -163,7 +163,7 @@
           </div>
 
         <div class="box-footer">
-          <button type="submit"  (click)="registrar()" [disabled]="!form.valid" class="btn btn-info pull-right">Incluir</button>
+          <button type="submit"  (click)="createOrUpdate()" [disabled]="!form.valid" class="btn btn-info pull-right">Incluir</button>
         </div>
       </form>
     </div>

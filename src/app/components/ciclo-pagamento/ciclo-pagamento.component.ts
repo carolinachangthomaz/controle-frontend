@@ -37,21 +37,54 @@ export class CicloPagamentoComponent implements OnInit {
     //console.log("depois" ,this.ciclo.creditos);
   }
 
+  removeCreditos(cred){
+    //console.log("antes" ,cred);
+    if(this.ciclo.creditos.length > 1){
+      //this.ciclo.creditos.splice(cred,1);
+      var index = this.ciclo.creditos.indexOf(cred);
+      if (index > -1) {
+        this.ciclo.creditos.splice(index, 1);
+      }
+    }  
+  }
+    
+   
+
+  cloneCreditos(cred){
+    //console.log("antes" ,cred);
+    this.ciclo.creditos.splice(cred + 1, 0, cred);
+    //console.log("depois" ,this.ciclo.creditos);
+  }
+
   addDebitos(deb){
     //console.log("antes" ,ciclo);
     this.ciclo.debitos.splice(deb + 1, 0, {});
   }
 
-  registrar(){
-    //console.log("registrar", this.ciclo);
+  removeDebitos(deb){
+    //console.log("antes" ,ciclo);
+    var index = this.ciclo.debitos.indexOf(deb);
+    if (index > -1) {
+      this.ciclo.debitos.splice(index, 1);
+    }
+  }
+  
+  cloneDebitos(deb){
+    //console.log("antes" ,ciclo);
+    this.ciclo.creditos.splice(deb + 1, 0, deb);
+  }
+
+
+  createOrUpdate(){
+    console.log("createorupdate >>>>>>>>>>>>>>>>>> ", this.ciclo);
     var indexCredito = this.ciclo.creditos[0];
     this.ciclo.creditos.splice(indexCredito, 1);
   
     var indexDebito = this.ciclo.debitos[0];
     this.ciclo.debitos.splice(indexDebito, 1);
   
-   this.cicloService.create(this.ciclo).subscribe((obj: Ciclo) => {
-    console.log("create" ,obj);
+   this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
+    console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
   },err =>{
      this.showMessage({
        type: 'error',
@@ -63,10 +96,15 @@ export class CicloPagamentoComponent implements OnInit {
 
   findById(id: string){
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
-      this.ciclo = obj;
+      this.ciclo._id = obj._id;
+      this.ciclo.nome = obj.nome;
+      this.ciclo.mes = obj.mes;
+      this.ciclo.ano =obj.ano;
+      this.ciclo.creditos = obj.creditos;
+      this.ciclo.debitos = obj.debitos;
       this.ciclo.creditos.push({});
       this.ciclo.debitos.push({});
-      console.log("findById" ,obj);
+      console.log("findById" , this.ciclo);
     },err =>{
        this.showMessage({
          type: 'error',
