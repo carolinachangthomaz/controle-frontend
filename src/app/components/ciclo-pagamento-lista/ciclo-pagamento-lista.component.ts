@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { Router } from '@angular/router';
 import { Ciclo } from '../../model/ciclo.model';
+import { Sumario } from '../../model/sumario.model';
 
 @Component({
   selector: 'app-ciclo-pagamento-lista',
@@ -10,7 +11,10 @@ import { Ciclo } from '../../model/ciclo.model';
 })
 export class CicloPagamentoListaComponent implements OnInit {
 
-  ciclos: Ciclo[] = [];;
+  ciclos: Ciclo[] = [];
+  ciclo = new Ciclo('','',null,null);
+  sumario = new Sumario(null,null);
+  total: Number; 
   message: {};
   classCss: {};
 
@@ -27,11 +31,37 @@ export class CicloPagamentoListaComponent implements OnInit {
     this.router.navigate(['/ciclo-pagamento',id]);
   }
 
+  calculadora(){
+    this.sumario.credito = 0;
+    this.sumario.debito = 0;
+    let cred = 0;
+    let deb = 0;
+
+    if(this.ciclo != null){
+      this.ciclo.creditos.forEach(function({valor}){
+        console.log(valor);
+        cred += !valor || isNaN(valor) ? 0 : parseFloat(valor);
+      })
+
+      this.ciclo.debitos.forEach(function({valor}){
+        deb += !valor || isNaN(valor) ? 0 : parseFloat(valor);
+      })
+
+      this.sumario.credito = cred;
+      this.sumario.debito = deb;
+      this.total = this.sumario.credito - this.sumario.debito;
+      this.formatDouble();
+    }
+  }
+
   findAll(){
     this.cicloService.findAll().subscribe((response) => {
       
       this.ciclos = response;
-      console.log(this.ciclos);
+      this.ciclos.forEach(function(key,index){
+        console.log("key" ,key);
+      })
+      
     },err =>{
        this.showMessage({
          type: 'error',
@@ -56,6 +86,35 @@ export class CicloPagamentoListaComponent implements OnInit {
         })
   }
 
+  findById(id: string){
+    this.cicloService.findById(id).subscribe((obj: Ciclo) => {
+      let creditos = [{}];
+      let debitos = [{}];
+      this.ciclo._id = obj._id;
+      this.ciclo.nome = obj.nome;
+      this.ciclo.mes = obj.mes;
+      this.ciclo.ano =obj.ano;
+      
+      obj.creditos.forEach(function(obj, value){
+        creditos.push(obj);
+      })
+      obj.debitos.forEach(function(obj, value){
+        debitos.push(obj);
+      })
+
+      this.ciclo.creditos = creditos;
+      this.ciclo.debitos = debitos;
+      
+      
+      this.calculadora();
+    },err =>{
+       this.showMessage({
+         type: 'error',
+         text: err['error']['errors'][0]
+       });
+    });
+  }
+
   private showMessage(message: {type: string, text: string}) : void{
     this.message = message;
     this.buildClass(message.type);
@@ -70,4 +129,10 @@ export class CicloPagamentoListaComponent implements OnInit {
     }
     this.classCss['alert-'+type] = true;
   }
+
+  formatDouble() {
+    document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
+     document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
+     document.getElementById("total").innerHTML = this.total.toFixed(2);
+ }
 }
