@@ -9,25 +9,25 @@ export class CicloPagamentoService {
 
   constructor(private http:HttpClient) { }
 
-  findAll(): Observable<Ciclo[]>{
-    return this.http.get<Ciclo[]>(`${APP_CONFIG.baseUrl}/ciclodepagamento`);
+  findAllCiclosByContasId(contaId: String): Observable<Ciclo[]>{
+    return this.http.get<Ciclo[]>(`${APP_CONFIG.baseUrl}/contas/${contaId}/ciclos`);
   }
 
   createOrUpdate(ciclo: Ciclo){
-    if(ciclo._id != null && ciclo._id != ''){
-      return this.http.put(`${APP_CONFIG.baseUrl}/ciclodepagamento/${ciclo._id}`, ciclo);
+    if(ciclo.id != null && ciclo.id != ''){
+      return this.http.put(`${APP_CONFIG.baseUrl}/ciclos/${ciclo.id}`, ciclo);
     }else{
-      ciclo._id = null;
-      return this.http.post(`${APP_CONFIG.baseUrl}/ciclodepagamento`, ciclo);
+      ciclo.id = null;
+      return this.http.post(`${APP_CONFIG.baseUrl}/ciclos`, ciclo);
     }
   }
 
   findById(id: string){
-    return this.http.get(`${APP_CONFIG.baseUrl}/ciclodepagamento/${id}`);
+    return this.http.get(`${APP_CONFIG.baseUrl}/ciclos/${id}`);
   }
 
   delete(id: string){
-    return this.http.delete(`${APP_CONFIG.baseUrl}/ciclodepagamento/${id}`);
+    return this.http.delete(`${APP_CONFIG.baseUrl}/ciclos/${id}`);
   }
   
 

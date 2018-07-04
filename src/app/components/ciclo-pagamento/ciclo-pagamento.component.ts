@@ -1,3 +1,4 @@
+import { Conta } from './../../model/conta.model';
 import { Ciclo } from './../../model/ciclo.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -114,7 +115,7 @@ export class CicloPagamentoComponent implements OnInit {
   
    this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
     console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
-    this.findById(obj._id);
+    this.findById(obj.id);
   },err =>{
      this.showMessage({
        type: 'error',
@@ -128,10 +129,19 @@ export class CicloPagamentoComponent implements OnInit {
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
       let creditos = [{}];
       let debitos = [{}];
-      this.ciclo._id = obj._id;
+      this.ciclo.id = obj.id;
+
+      this.ciclo.conta = new Conta('','',null);
+     
+      this.ciclo.conta.id = obj.conta.id
+      this.ciclo.conta.nome = obj.conta.nome
+      this.ciclo.conta.clienteDTO = obj.conta['cliente'];
+      console.log('novo ciclo  ' +this.ciclo.conta);
+
       this.ciclo.nome = obj.nome;
       this.ciclo.mes = obj.mes;
       this.ciclo.ano =obj.ano;
+
       
       obj.creditos.forEach(function(obj, value){
         creditos.push(obj);

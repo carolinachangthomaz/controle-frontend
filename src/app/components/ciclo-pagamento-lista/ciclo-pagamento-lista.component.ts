@@ -24,7 +24,7 @@ export class CicloPagamentoListaComponent implements OnInit {
    }
 
   ngOnInit() {
-   this.findAll();
+    this.findAllCiclosByContasId('5b3c28545ebdbc24fcb29de9');   
   }
 
   visualizar(id: string){
@@ -54,8 +54,8 @@ export class CicloPagamentoListaComponent implements OnInit {
     }
   }
 
-  findAll(){
-    this.cicloService.findAll().subscribe((response) => {
+  findAllCiclosByContasId(contaId: string){
+    this.cicloService.findAllCiclosByContasId(contaId).subscribe((response) => {
       
       this.ciclos = response;
       this.ciclos.forEach(function(key,index){
@@ -70,14 +70,14 @@ export class CicloPagamentoListaComponent implements OnInit {
     });
   }
 
-  delete(id: string){
+  delete(contaId: string){
     this.message = {};
-        this.cicloService.delete(id).subscribe((obj: Ciclo) => {
+        this.cicloService.delete(contaId).subscribe((obj: Ciclo) => {
           this.showMessage({
              type: 'success',
              text: 'Ticket excluído'
           });
-          this.findAll();
+          this.findAllCiclosByContasId(contaId);
         }, err =>{
           this.showMessage({
             type: 'error',
@@ -90,7 +90,7 @@ export class CicloPagamentoListaComponent implements OnInit {
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
       let creditos = [{}];
       let debitos = [{}];
-      this.ciclo._id = obj._id;
+      this.ciclo.id = obj.id;
       this.ciclo.nome = obj.nome;
       this.ciclo.mes = obj.mes;
       this.ciclo.ano =obj.ano;

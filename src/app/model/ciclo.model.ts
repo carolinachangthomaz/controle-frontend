@@ -1,8 +1,11 @@
+import { Conta } from "./conta.model";
+
 export class Ciclo{
-    _id: string;
+    id: string;
     nome: String;
     mes: Number;
     ano: Number;
+    conta:Conta;
     creditos=[];
     debitos=[];
     
