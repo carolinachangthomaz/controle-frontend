@@ -1,3 +1,4 @@
+import { ClienteComponent } from './components/cliente/cliente.component';
 import { Routes, RouterModule } from "@angular/router";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { ModuleWithProviders } from "@angular/compiler/src/core";
@@ -6,6 +7,7 @@ import { CicloPagamentoListaComponent } from "./components/ciclo-pagamento-lista
 
 export const ROUTES: Routes = [
   {path: '', component: DashboardComponent},
+  {path: 'cliente', component: ClienteComponent},
   {path: 'ciclo-pagamento', component: CicloPagamentoComponent},
   {path: 'ciclo-pagamento/:id', component: CicloPagamentoComponent},
   {path: 'ciclo-pagamento-lista', component: CicloPagamentoListaComponent}

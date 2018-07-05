@@ -1,3 +1,4 @@
+import { ClienteService } from './services/cliente.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -13,6 +14,7 @@ import { CicloPagamentoComponent } from './components/ciclo-pagamento/ciclo-paga
 import { FormsModule } from '@angular/forms';
 import { CicloPagamentoService } from './services/ciclo-pagamento.service';
 import { CicloPagamentoListaComponent } from './components/ciclo-pagamento-lista/ciclo-pagamento-lista.component';
+import { ClienteComponent } from './components/cliente/cliente.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { CicloPagamentoListaComponent } from './components/ciclo-pagamento-lista
     FooterComponent,
     DashboardComponent,
     CicloPagamentoComponent,
-    CicloPagamentoListaComponent
+    CicloPagamentoListaComponent,
+    ClienteComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,7 @@ import { CicloPagamentoListaComponent } from './components/ciclo-pagamento-lista
     HttpClientModule,
     routes
   ],
-  providers: [DashboardService,CicloPagamentoService],
+  providers: [DashboardService,CicloPagamentoService,ClienteService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
