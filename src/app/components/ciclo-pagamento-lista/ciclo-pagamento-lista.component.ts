@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Ciclo } from '../../model/ciclo.model';
 import { Sumario } from '../../model/sumario.model';
 
@@ -19,12 +19,16 @@ export class CicloPagamentoListaComponent implements OnInit {
   classCss: {};
 
   constructor(private cicloService: CicloPagamentoService,
-             private router: Router) {
+             private router: Router,
+             private route: ActivatedRoute) {
    
    }
 
   ngOnInit() {
-    this.findAllCiclosByContasId('5b3c28545ebdbc24fcb29de9');   
+    let id : string = this.route.snapshot.params['id'];
+    if(id != undefined){
+      this.findAllCiclosByContasId(id); 
+    }
   }
 
   visualizar(id: string){

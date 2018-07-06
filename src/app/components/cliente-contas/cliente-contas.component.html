@@ -1,0 +1,23 @@
+<div class="box-body">
+  <table class="table" style="background-color: white">
+     <thead>
+       <tr>
+         <th>Nome</th>
+         <th>Editar</th>
+       </tr>
+     </thead>
+     <tbody>
+        <tr *ngFor="let c of contas">
+            <td>{{c.nome}}</td>
+             <td style="width: 140px">
+                <button class="btn btn-warning" (click)="getCliclosByContaId(c.id)">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <!-- <button class="btn btn-danger" (click)="findById(c.id)">
+                    <i class="fa fa-trash-o"></i>
+                </button> c -> Ctrl+K, Ctrl+C rc -> Ctrl+K, Ctrl+U-->
+            </td>
+        </tr>
+     </tbody>
+  </table>
+</div>

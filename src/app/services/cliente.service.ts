@@ -26,7 +26,7 @@ export class ClienteService {
     return this.http.get(`${APP_CONFIG.baseUrl}/clientes/${id}`);
   }
 
-  getContas(id: string){
+  getContasByCliente(id: string){
     return this.http.get(`${APP_CONFIG.baseUrl}/clientes/${id}/contas`);
   }
 

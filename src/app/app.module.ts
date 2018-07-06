@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { CicloPagamentoService } from './services/ciclo-pagamento.service';
 import { CicloPagamentoListaComponent } from './components/ciclo-pagamento-lista/ciclo-pagamento-lista.component';
 import { ClienteComponent } from './components/cliente/cliente.component';
+import { ClienteContasComponent } from './components/cliente-contas/cliente-contas.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ClienteComponent } from './components/cliente/cliente.component';
     DashboardComponent,
     CicloPagamentoComponent,
     CicloPagamentoListaComponent,
-    ClienteComponent
+    ClienteComponent,
+    ClienteContasComponent
   ],
   imports: [
     BrowserModule,

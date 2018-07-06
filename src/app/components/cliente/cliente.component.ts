@@ -61,14 +61,7 @@ export class ClienteComponent implements OnInit {
   }
 
   getContas(id: string){
-    this.clienteService.getContas(id).subscribe((obj: ClienteDTO) => {
-      this.clienteDTO = obj;
-    },err =>{
-       this.showMessage({
-         type: 'error',
-         text: err['error']['errors'][0]
-       });
-    });
+      this.router.navigate(['/cliente-contas',id]);
   }
 
   private showMessage(message: {type: string, text: string}) : void{
