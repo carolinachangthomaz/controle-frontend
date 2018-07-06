@@ -13,19 +13,19 @@ export class ClienteComponent implements OnInit {
 
   message: {};
   classCss: {};
-  contas: Conta[] = [];
-  cliente = new  ClienteDTO('','',null);
-
+  clienteDTO = new ClienteDTO('','',null);
+  clientesDTO: ClienteDTO[] = [];
+  
   constructor(private clienteService: ClienteService, private router: Router) { }
 
   ngOnInit() {
-    console.log("fdsgfd");
     this.findAll();
   }
 
   findAll(){
-    this.clienteService.findAll().subscribe((obj: ClienteDTO) => {
-      this.cliente = obj;
+    this.clienteService.findAll().subscribe((obj: ClienteDTO[]) => {
+      this.clientesDTO = obj;
+      
    } , err => {
      this.showMessage({
        type: 'error',
@@ -51,9 +51,18 @@ export class ClienteComponent implements OnInit {
 
   findById(id: string){
     this.clienteService.findById(id).subscribe((obj: ClienteDTO) => {
-      
-      
-   
+      this.clienteDTO = obj;
+    },err =>{
+       this.showMessage({
+         type: 'error',
+         text: err['error']['errors'][0]
+       });
+    });
+  }
+
+  getContas(id: string){
+    this.clienteService.getContas(id).subscribe((obj: ClienteDTO) => {
+      this.clienteDTO = obj;
     },err =>{
        this.showMessage({
          type: 'error',

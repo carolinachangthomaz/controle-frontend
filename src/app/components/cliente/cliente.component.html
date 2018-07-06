@@ -3,18 +3,19 @@
      <thead>
        <tr>
          <th>Nome</th>
+         <th>Editar</th>
        </tr>
      </thead>
      <tbody>
-        <tr *ngFor="let c of cliente.contas">
+        <tr *ngFor="let c of clientes">
             <td>{{c.nome}}</td>
              <td style="width: 140px">
                 <button class="btn btn-warning" (click)="findById(c.id)">
                     <i class="fa fa-pencil"></i>
                 </button>
-                <button class="btn btn-danger" (click)="findById(c.id)">
+                <!-- <button class="btn btn-danger" (click)="findById(c.id)">
                     <i class="fa fa-trash-o"></i>
-                </button>
+                </button> c -> Ctrl+K, Ctrl+C rc -> Ctrl+K, Ctrl+U-->
             </td>
         </tr>
      </tbody>
