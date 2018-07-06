@@ -25,7 +25,7 @@ export class ClienteComponent implements OnInit {
   findAll(){
     this.clienteService.findAll().subscribe((obj: ClienteDTO[]) => {
       this.clientesDTO = obj;
-      
+      console.log(obj);
    } , err => {
      this.showMessage({
        type: 'error',
