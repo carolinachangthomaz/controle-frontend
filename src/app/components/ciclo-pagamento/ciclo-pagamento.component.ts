@@ -141,8 +141,7 @@ export class CicloPagamentoComponent implements OnInit {
       this.ciclo.nome = obj.nome;
       this.ciclo.mes = obj.mes;
       this.ciclo.ano =obj.ano;
-
-      
+  
       obj.creditos.forEach(function(obj, value){
         creditos.push(obj);
       })

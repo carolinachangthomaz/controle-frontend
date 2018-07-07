@@ -13,7 +13,6 @@ export class CicloPagamentoListaComponent implements OnInit {
 
   ciclos: Ciclo[] = [];
   ciclo = new Ciclo('','',null,null);
-  sumario = new Sumario(null,null);
   total: Number; 
   message: {};
   classCss: {};
@@ -36,8 +35,6 @@ export class CicloPagamentoListaComponent implements OnInit {
   }
 
   calculadora(){
-    this.sumario.credito = 0;
-    this.sumario.debito = 0;
     let cred = 0;
     let deb = 0;
 
@@ -50,11 +47,7 @@ export class CicloPagamentoListaComponent implements OnInit {
       this.ciclo.debitos.forEach(function({valor}){
         deb += !valor || isNaN(valor) ? 0 : parseFloat(valor);
       })
-
-      this.sumario.credito = cred;
-      this.sumario.debito = deb;
-      this.total = this.sumario.credito - this.sumario.debito;
-      this.formatDouble();
+  
     }
   }
 
@@ -98,6 +91,9 @@ export class CicloPagamentoListaComponent implements OnInit {
       this.ciclo.nome = obj.nome;
       this.ciclo.mes = obj.mes;
       this.ciclo.ano =obj.ano;
+      this.ciclo.saldo =obj.saldo;
+      this.ciclo.totalCreditos =obj.totalCreditos;
+      this.ciclo.totalDebitos =obj.totalDebitos;
       
       obj.creditos.forEach(function(obj, value){
         creditos.push(obj);
@@ -133,10 +129,4 @@ export class CicloPagamentoListaComponent implements OnInit {
     }
     this.classCss['alert-'+type] = true;
   }
-
-  formatDouble() {
-    document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
-     document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
-     document.getElementById("total").innerHTML = this.total.toFixed(2);
- }
 }

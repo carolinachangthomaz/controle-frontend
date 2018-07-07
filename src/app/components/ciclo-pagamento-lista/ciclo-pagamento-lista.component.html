@@ -5,6 +5,9 @@
          <th>Nome</th>
          <th>Mês</th>
          <th>Ano</th>
+         <th>Saldo</th>
+         <th>Total Créditos</th>
+         <th>Total Débitos</th>
          <th>Ações</th>
        </tr>
      </thead>
@@ -13,9 +16,9 @@
             <td>{{c.nome}}</td>
             <td>{{c.mes}}</td>
             <td>{{c.ano}}</td>
-            <td id="credito">{{ sumario.credito }}</td>
-            <td id="credito">{{ sumario.debito }}</td>
-            <td id="credito">{{ total }}</td>
+            <td >{{ c.saldo }}</td>
+            <td>{{ c.totalCreditos }}</td>
+            <td>{{ c.totalDebitos }}</td>
             <td style="width: 140px">
                 <button class="btn btn-warning" (click)="visualizar(c.id)">
                     <i class="fa fa-pencil"></i>
