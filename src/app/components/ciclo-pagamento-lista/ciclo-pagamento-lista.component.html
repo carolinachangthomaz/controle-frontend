@@ -8,7 +8,8 @@
          <th>Saldo</th>
          <th>Total Créditos</th>
          <th>Total Débitos</th>
-         <th>Ações</th>
+         <th>Editar</th>
+         <th>Excluir</th>
        </tr>
      </thead>
      <tbody>
@@ -19,10 +20,12 @@
             <td >{{ c.saldo }}</td>
             <td>{{ c.totalCreditos }}</td>
             <td>{{ c.totalDebitos }}</td>
-            <td style="width: 140px">
+            <td>
                 <button class="btn btn-warning" (click)="visualizar(c.id)">
                     <i class="fa fa-pencil"></i>
                 </button>
+            </td>
+            <td>
                 <button class="btn btn-danger" (click)="delete(c.id)">
                     <i class="fa fa-trash-o"></i>
                 </button>
