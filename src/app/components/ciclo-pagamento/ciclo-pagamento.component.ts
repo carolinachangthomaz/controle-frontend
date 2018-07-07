@@ -46,6 +46,7 @@ export class CicloPagamentoComponent implements OnInit {
      this.ciclo = new Ciclo('','',null,null);
      this.ciclo.conta = new Conta('','',null);
      this.ciclo.conta.id = this.contaId;
+     this.ciclo.id = null;
      this.ciclo.creditos = [{}];
      this.ciclo.debitos = [{}];
 

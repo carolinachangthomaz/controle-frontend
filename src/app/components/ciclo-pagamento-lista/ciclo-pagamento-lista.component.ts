@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Ciclo } from '../../model/ciclo.model';
 import { Sumario } from '../../model/sumario.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-ciclo-pagamento-lista',
@@ -11,11 +12,17 @@ import { Sumario } from '../../model/sumario.model';
 })
 export class CicloPagamentoListaComponent implements OnInit {
 
+  @ViewChild("form")
+  form: NgForm
+
+  ciclo = new Ciclo('','',null,null);
   ciclos: Ciclo[] = [];
   sumario = new Sumario(null,null,null);
   message: {};
   classCss: {};
   contaId: string;
+  cicloId:string;
+  
 
   constructor(private cicloService: CicloPagamentoService,
              private router: Router,
@@ -36,6 +43,24 @@ export class CicloPagamentoListaComponent implements OnInit {
 
   criarNovoCiclo(){
     this.router.navigate(['/ciclo-pagamento'], {queryParams: {contaId: this.contaId}} );
+}
+
+clone(cicloId: string){
+  console.log("Clone ---->>>>  " +cicloId);
+  this.cicloId = cicloId;
+}
+
+cloneCreate(){
+  this.ciclo.id = this.cicloId;
+  this.cicloService.createClone(this.ciclo).subscribe((obj: Ciclo) => {
+    console.log("CLONE OK >>>>>>>>> ");
+    location.reload();
+  },err =>{
+     this.showMessage({
+       type: 'error',
+       text: err['error']['errors'][0]
+     });
+  });
 }
 
   calculadora(){
@@ -77,7 +102,7 @@ export class CicloPagamentoListaComponent implements OnInit {
              type: 'success',
              text: 'Ticket excluído'
           });
-          this.findAllCiclosByContasId(contaId);
+          location.reload();
         }, err =>{
           this.showMessage({
             type: 'error',

@@ -17,9 +17,12 @@ export class CicloPagamentoService {
     if(ciclo.id != null && ciclo.id != ''){
       return this.http.put(`${APP_CONFIG.baseUrl}/ciclos/${ciclo.id}`, ciclo);
     }else{
-      ciclo.id = null;
       return this.http.post(`${APP_CONFIG.baseUrl}/ciclos`, ciclo);
     }
+  }
+
+  createClone(ciclo: Ciclo){
+    return this.http.post(`${APP_CONFIG.baseUrl}/ciclos/clone`, ciclo);
   }
 
   findById(id: string){
