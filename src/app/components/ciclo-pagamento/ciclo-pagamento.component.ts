@@ -20,6 +20,7 @@ export class CicloPagamentoComponent implements OnInit {
   classCss: {};
   ciclo = new Ciclo('','',null,null);
   sumario = new Sumario(null,null,null); 
+  contaId:string;
   
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute) {
@@ -31,7 +32,24 @@ export class CicloPagamentoComponent implements OnInit {
     let id : string = this.route.snapshot.params['id'];
     if(id != undefined){
       this.findById(id);
+    }else{
+      this.route.queryParams.subscribe(params => {
+         this.contaId = params['contaId'];
+       
+    });
+     
+      this.createNewCicle();
     }
+  }
+
+  createNewCicle(){
+     this.ciclo = new Ciclo('','',null,null);
+     this.ciclo.conta = new Conta('','',null);
+     this.ciclo.conta.id = this.contaId;
+     this.ciclo.creditos = [{}];
+     this.ciclo.debitos = [{}];
+
+     this.sumario = new Sumario(null,null,null); 
   }
 
   calculadora(){
@@ -111,7 +129,7 @@ export class CicloPagamentoComponent implements OnInit {
   
     var indexDebito = this.ciclo.debitos[0];
     this.ciclo.debitos.splice(indexDebito, 1);
-  
+    
    this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
     console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
     this.findById(obj.id);

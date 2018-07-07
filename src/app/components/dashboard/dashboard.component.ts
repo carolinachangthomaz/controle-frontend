@@ -9,7 +9,7 @@ import { Sumario } from '../../model/sumario.model';
 })
 export class DashboardComponent implements OnInit {
 
-  sumario = new Sumario(null,null);
+  sumario = new Sumario(null,null,null);
  
   constructor(public dashboardService:DashboardService) {
    

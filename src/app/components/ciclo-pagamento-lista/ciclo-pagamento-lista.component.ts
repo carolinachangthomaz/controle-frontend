@@ -15,6 +15,7 @@ export class CicloPagamentoListaComponent implements OnInit {
   sumario = new Sumario(null,null,null);
   message: {};
   classCss: {};
+  contaId: string;
 
   constructor(private cicloService: CicloPagamentoService,
              private router: Router,
@@ -23,15 +24,19 @@ export class CicloPagamentoListaComponent implements OnInit {
    }
 
   ngOnInit() {
-    let id : string = this.route.snapshot.params['id'];
-    if(id != undefined){
-      this.findAllCiclosByContasId(id); 
+    this.contaId = this.route.snapshot.params['id'];
+    if(this.contaId != undefined){
+      this.findAllCiclosByContasId(this.contaId); 
     }
   }
 
   visualizar(id: string){
-    this.router.navigate(['/ciclo-pagamento',id]);
+      this.router.navigate(['/ciclo-pagamento',id]);
   }
+
+  criarNovoCiclo(){
+    this.router.navigate(['/ciclo-pagamento'], {queryParams: {contaId: this.contaId}} );
+}
 
   calculadora(){
     var credito:number = 0;
