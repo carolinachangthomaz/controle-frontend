@@ -1,3 +1,51 @@
+<div class="col-md-12" style="margin-left: 0%">
+        <div class="box box-warning">
+          <div class="box-header with-border">
+            
+          </div>
+    
+          <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="small-box bg-green">
+                           <div class="inner">
+                               <h3 id="credito">{{ sumario.credito }}</h3>
+                               <p>Total créditos</p>
+                           </div>
+                           <div class="icon">
+                               <i class="fa fa-bank"></i>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-xs-4">
+                         <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3 id="debito">{{ sumario.debito }}</h3>
+                                <p>Total débitos</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-credit-card"></i>
+                            </div>
+                         </div>
+                      </div>
+                      <div class="col-xs-4">
+                         <div class="small-box bg-blue">
+                            <div class="inner">
+                                <h3 id="saldo">{{ sumario.saldo }}</h3>
+                                <p>Saldo</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-money"></i>
+                            </div>
+                         </div>
+                      </div>
+                </div>
+            </div>
+            
+            
+        </div>
+</div>
+
 <div class="box-body">
   <table class="table" style="background-color: white">
      <thead>
@@ -5,9 +53,9 @@
          <th>Nome</th>
          <th>Mês</th>
          <th>Ano</th>
-         <th>Saldo</th>
          <th>Total Créditos</th>
          <th>Total Débitos</th>
+         <th>Saldo</th>
          <th>Editar</th>
          <th>Excluir</th>
        </tr>
@@ -17,9 +65,9 @@
             <td>{{c.nome}}</td>
             <td>{{c.mes}}</td>
             <td>{{c.ano}}</td>
-            <td >{{ c.saldo }}</td>
             <td>{{ c.totalCreditos }}</td>
             <td>{{ c.totalDebitos }}</td>
+            <td >{{ c.saldo }}</td>
             <td>
                 <button class="btn btn-warning" (click)="visualizar(c.id)">
                     <i class="fa fa-pencil"></i>

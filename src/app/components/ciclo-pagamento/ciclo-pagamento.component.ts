@@ -19,9 +19,8 @@ export class CicloPagamentoComponent implements OnInit {
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
-  sumario = new Sumario(null,null); 
-  total: Number;
-
+  sumario = new Sumario(null,null,null); 
+  
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute) {
     this.ciclo.creditos = [{}],
@@ -53,7 +52,7 @@ export class CicloPagamentoComponent implements OnInit {
 
       this.sumario.credito = cred;
       this.sumario.debito = deb;
-      this.total = this.sumario.credito - this.sumario.debito;
+      this.sumario.saldo = this.sumario.credito - this.sumario.debito;
       this.formatDouble();
     }
   }
@@ -136,8 +135,7 @@ export class CicloPagamentoComponent implements OnInit {
       this.ciclo.conta.id = obj.conta.id
       this.ciclo.conta.nome = obj.conta.nome
       this.ciclo.conta.clienteDTO = obj.conta['cliente'];
-      console.log('novo ciclo  ' +this.ciclo.conta);
-
+     
       this.ciclo.nome = obj.nome;
       this.ciclo.mes = obj.mes;
       this.ciclo.ano =obj.ano;
@@ -182,7 +180,7 @@ export class CicloPagamentoComponent implements OnInit {
   formatDouble() {
     document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
      document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
-     document.getElementById("total").innerHTML = this.total.toFixed(2);
+     document.getElementById("saldo").innerHTML = this.sumario.saldo.toFixed(2);
  }
 
 }

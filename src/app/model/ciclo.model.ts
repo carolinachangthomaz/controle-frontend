@@ -5,9 +5,9 @@ export class Ciclo{
     nome: String;
     mes: Number;
     ano: Number;
-    saldo: Number;
-    totalCreditos: Number;
-    totalDebitos: Number;
+    saldo: number;
+    totalCreditos: number;
+    totalDebitos: number;
     conta:Conta;
     creditos=[];
     debitos=[];
