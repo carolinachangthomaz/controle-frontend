@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Sumario } from '../../model/sumario.model';
 import { DebitoDTO } from '../../model/debitoDTO';
 import { DebitoDescricao } from '../../model/debitoDescricao.model';
+import { DebitoDescricaoService } from '../../services/debito-descricao.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class CicloPagamentoComponent implements OnInit {
   @ViewChild("form")
   form: NgForm
   
-  descricoes = [{id:"4345345",nome:"Mercado"},{id:"6575675",nome:"Uber"}]
+  debitodescricoes = [];
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
@@ -27,7 +28,8 @@ export class CicloPagamentoComponent implements OnInit {
   contaId:string;
   
   constructor(private cicloService: CicloPagamentoService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private debitodescricaoService: DebitoDescricaoService) {
     this.ciclo.creditos = [{}],
     this.ciclo.debitos = [new DebitoDTO()];
    }
@@ -35,15 +37,28 @@ export class CicloPagamentoComponent implements OnInit {
   ngOnInit() {
     let id : string = this.route.snapshot.params['id'];
     if(id != undefined){
+      this.findAllDebitodescricoes();
       this.findById(id);
+      
     }else{
       this.route.queryParams.subscribe(params => {
          this.contaId = params['contaId'];
        
     });
-     
+      this.findAllDebitodescricoes();
       this.createNewCicle();
     }
+  }
+
+  findAllDebitodescricoes(){
+    this.debitodescricaoService.findAll().subscribe((obj: DebitoDescricao[]) => {
+      this.debitodescricoes = obj;
+   } , err => {
+     this.showMessage({
+       type: 'error',
+       text: err['error']['errors'][0]
+     });
+   });
   }
 
   createNewCicle(){

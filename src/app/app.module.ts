@@ -16,6 +16,7 @@ import { CicloPagamentoService } from './services/ciclo-pagamento.service';
 import { CicloPagamentoListaComponent } from './components/ciclo-pagamento-lista/ciclo-pagamento-lista.component';
 import { ClienteComponent } from './components/cliente/cliente.component';
 import { ClienteContasComponent } from './components/cliente-contas/cliente-contas.component';
+import { DebitoDescricaoService } from './services/debito-descricao.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { ClienteContasComponent } from './components/cliente-contas/cliente-cont
     HttpClientModule,
     routes
   ],
-  providers: [DashboardService,CicloPagamentoService,ClienteService],
+  providers: [DashboardService,CicloPagamentoService,ClienteService,DebitoDescricaoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
