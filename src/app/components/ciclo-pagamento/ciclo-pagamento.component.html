@@ -177,6 +177,7 @@
                                 <table class="table table-bordered">
                                   <tr>
                                     <th>Nome</th>
+                                    <th>Descrição</th>
                                     <th>Valor</th>
                                     <th>Status</th>
                                     <th><button type="submit"  (click)="createOrUpdate()" [disabled]="!form.valid" class="btn btn-info btn-md">Salvar</button></th>
@@ -188,6 +189,17 @@
                                         class="form-control" 
                                         [ngModelOptions]="{standalone: true}"
                                         ngModel>
+                                    </td>
+                                    <td>
+                                            <select  [(ngModel)]="deb.descricao"
+                                                class="form-control select2" 
+                                                id="inputDescricao" 
+                                                [ngModelOptions]="{standalone: true}"
+                                                style="width: 100%"
+                                                required
+                                                ngModel>
+                                                <option *ngFor="let o of descricoes" [ngValue]="o" [selected]="o.id == 4345345 ">{{o.nome}}</option>
+                                            </select>
                                     </td>
                                     <td>
                                         <input (change)="calculadora()"

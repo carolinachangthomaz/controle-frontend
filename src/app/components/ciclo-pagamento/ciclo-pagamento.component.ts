@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { ActivatedRoute } from '@angular/router';
 import { Sumario } from '../../model/sumario.model';
+import { DebitoDTO } from '../../model/debitoDTO';
 
 @Component({
   selector: 'app-ciclo-pagamento',
@@ -16,6 +17,7 @@ export class CicloPagamentoComponent implements OnInit {
   @ViewChild("form")
   form: NgForm
   
+  descricoes = [{id:4345345,nome:"Mercado"},{id:6575675,nome:"Uber"}]
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
@@ -25,7 +27,7 @@ export class CicloPagamentoComponent implements OnInit {
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute) {
     this.ciclo.creditos = [{}],
-    this.ciclo.debitos = [{}]
+    this.ciclo.debitos = [new DebitoDTO()];
    }
 
   ngOnInit() {
@@ -48,7 +50,7 @@ export class CicloPagamentoComponent implements OnInit {
      this.ciclo.conta.id = this.contaId;
      this.ciclo.id = null;
      this.ciclo.creditos = [{}];
-     this.ciclo.debitos = [{}];
+     this.ciclo.debitos = [new DebitoDTO()];
 
      this.sumario = new Sumario(null,null,null); 
   }
@@ -65,8 +67,8 @@ export class CicloPagamentoComponent implements OnInit {
         cred += !valor || isNaN(valor) ? 0 : parseFloat(valor);
       })
 
-      this.ciclo.debitos.forEach(function({valor}){
-        deb += !valor || isNaN(valor) ? 0 : parseFloat(valor);
+      this.ciclo.debitos.forEach(function(obj, value){
+        deb += !obj.valor || isNaN(obj.valor) ? 0 : obj.valor;
       })
 
       this.sumario.credito = cred;
@@ -105,7 +107,7 @@ export class CicloPagamentoComponent implements OnInit {
 
   addDebitos(deb){
     //console.log("antes" ,ciclo);
-    this.ciclo.debitos.splice(deb + 1, 0, {});
+    this.ciclo.debitos.splice(deb + 1, 0, new DebitoDTO());
   }
 
   removeDebitos(deb){
@@ -125,28 +127,24 @@ export class CicloPagamentoComponent implements OnInit {
 
 
   createOrUpdate(){
-    var indexCredito = this.ciclo.creditos[0];
-    this.ciclo.creditos.splice(indexCredito, 1);
-  
-    var indexDebito = this.ciclo.debitos[0];
-    this.ciclo.debitos.splice(indexDebito, 1);
-    
-   this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
-    console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
-    this.findById(obj.id);
-  },err =>{
-     this.showMessage({
-       type: 'error',
-       text: err['error']['errors'][0]
-     });
-  });
-   
+    this.ciclo.creditos.shift();
+    this.ciclo.debitos.shift();
+    this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
+      console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
+      //this.findById(obj.id);
+      //location.reload();
+    },err =>{
+       this.showMessage({
+         type: 'error',
+         text: err['error']['errors'][0]
+       });
+    });
   }
 
   findById(id: string){
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
       let creditos = [{}];
-      let debitos = [{}];
+      let debitos = [new DebitoDTO()];
       this.ciclo.id = obj.id;
 
       this.ciclo.conta = new Conta('','',null);
@@ -162,13 +160,13 @@ export class CicloPagamentoComponent implements OnInit {
       obj.creditos.forEach(function(obj, value){
         creditos.push(obj);
       })
+
       obj.debitos.forEach(function(obj, value){
         debitos.push(obj);
       })
-
+      
       this.ciclo.creditos = creditos;
       this.ciclo.debitos = debitos;
-      
       
       this.calculadora();
     },err =>{

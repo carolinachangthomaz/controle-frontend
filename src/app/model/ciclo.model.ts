@@ -1,3 +1,4 @@
+import { DebitoDTO } from './debitoDTO';
 import { Conta } from "./conta.model";
 
 export class Ciclo{
@@ -10,7 +11,7 @@ export class Ciclo{
     totalDebitos: number;
     conta:Conta;
     creditos=[];
-    debitos=[];
+    debitos:Array<DebitoDTO>;
     
 constructor(id: string, nome: String, mes: Number, ano: Number){}    
 
