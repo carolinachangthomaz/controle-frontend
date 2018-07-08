@@ -6,6 +6,8 @@ import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { ActivatedRoute } from '@angular/router';
 import { Sumario } from '../../model/sumario.model';
 import { DebitoDTO } from '../../model/debitoDTO';
+import { DebitoDescricao } from '../../model/debitoDescricao.model';
+
 
 @Component({
   selector: 'app-ciclo-pagamento',
@@ -17,7 +19,7 @@ export class CicloPagamentoComponent implements OnInit {
   @ViewChild("form")
   form: NgForm
   
-  descricoes = [{id:4345345,nome:"Mercado"},{id:6575675,nome:"Uber"}]
+  descricoes = [{id:"4345345",nome:"Mercado"},{id:"6575675",nome:"Uber"}]
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
@@ -144,7 +146,11 @@ export class CicloPagamentoComponent implements OnInit {
   findById(id: string){
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
       let creditos = [{}];
-      let debitos = [new DebitoDTO()];
+      let debitoDTO = new DebitoDTO();
+      let descricao = new DebitoDescricao(null,'');
+      debitoDTO.descricao = descricao;
+      
+      let debitos = [debitoDTO];
       this.ciclo.id = obj.id;
 
       this.ciclo.conta = new Conta('','',null);

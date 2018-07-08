@@ -1,4 +1,4 @@
-export class Descricao{
+export class DebitoDescricao{
     id: string;
     nome: string;
     
