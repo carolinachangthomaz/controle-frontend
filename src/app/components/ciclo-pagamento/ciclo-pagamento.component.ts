@@ -20,6 +20,7 @@ export class CicloPagamentoComponent implements OnInit {
   @ViewChild("form")
   form: NgForm
   
+  debitoDescricao =new DebitoDescricao('','');
   debitodescricoes = [];
   message: {};
   classCss: {};
@@ -53,6 +54,24 @@ export class CicloPagamentoComponent implements OnInit {
   findAllDebitodescricoes(){
     this.debitodescricaoService.findAll().subscribe((obj: DebitoDescricao[]) => {
       this.debitodescricoes = obj;
+   } , err => {
+     this.showMessage({
+       type: 'error',
+       text: err['error']['errors'][0]
+     });
+   });
+  }
+
+  salvarDebitoDescricao(){
+     this.debitodescricaoService.createOrUpdate(this.debitoDescricao).subscribe((obj: DebitoDescricao) => {
+     
+      var newOption = document.createElement("option");
+         newOption.value = obj.id;
+         newOption.text = this.debitoDescricao.nome;
+    var select = document.getElementById("inputDescricao");
+    select.appendChild(newOption);
+    let element: HTMLElement = document.getElementsByClassName('close')[0] as HTMLElement;
+    element.click();
    } , err => {
      this.showMessage({
        type: 'error',
@@ -148,9 +167,32 @@ export class CicloPagamentoComponent implements OnInit {
     this.ciclo.debitos.shift();
     this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
       console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
-      //this.findById(obj.id);
-      //location.reload();
-    },err =>{
+      let creditos = [{}];
+      let debitos = [{"descricao": {id: "0", nome: null}}];
+
+      this.ciclo.id = obj.id;
+
+      this.ciclo.conta = new Conta('','',null);
+     
+      this.ciclo.conta.id = obj.conta.id
+      this.ciclo.conta.nome = obj.conta.nome
+      this.ciclo.conta.clienteDTO = obj.conta['cliente'];
+     
+      this.ciclo.nome = obj.nome;
+      this.ciclo.mes = obj.mes;
+      this.ciclo.ano =obj.ano;
+
+      obj.creditos.forEach(function(obj, value){
+        creditos.push(obj);
+      })
+
+      obj.debitos.forEach(function(obj, value){
+        debitos.push(obj);
+      })
+      
+      this.ciclo.creditos = creditos;
+      this.ciclo.debitos = debitos as  DebitoDTO[];
+     },err =>{
        this.showMessage({
          type: 'error',
          text: err['error']['errors'][0]
@@ -161,11 +203,8 @@ export class CicloPagamentoComponent implements OnInit {
   findById(id: string){
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
       let creditos = [{}];
-      let debitoDTO = new DebitoDTO();
-      let descricao = new DebitoDescricao(null,'');
-      debitoDTO.descricao = descricao;
+      let debitos = [{"descricao": {id: "0", nome: null}}];
       
-      let debitos = [debitoDTO];
       this.ciclo.id = obj.id;
 
       this.ciclo.conta = new Conta('','',null);
@@ -187,7 +226,7 @@ export class CicloPagamentoComponent implements OnInit {
       })
       
       this.ciclo.creditos = creditos;
-      this.ciclo.debitos = debitos;
+      this.ciclo.debitos = debitos as  DebitoDTO[];
       
       this.calculadora();
     },err =>{
