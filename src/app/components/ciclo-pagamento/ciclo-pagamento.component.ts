@@ -277,6 +277,8 @@ export class CicloPagamentoComponent implements OnInit {
     document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
      document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
      document.getElementById("saldo").innerHTML = this.sumario.saldo.toFixed(2);
+     document.getElementsByClassName("pendente")[0].innerHTML = this.sumario.pendente.toFixed(2);
+     document.getElementsByClassName("pendente")[1].innerHTML = this.sumario.pendente.toFixed(2);
  }
 
 }

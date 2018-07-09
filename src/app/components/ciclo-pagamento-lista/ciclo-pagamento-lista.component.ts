@@ -17,7 +17,7 @@ export class CicloPagamentoListaComponent implements OnInit {
 
   ciclo = new Ciclo('','',null,null);
   ciclos: Ciclo[] = [];
-  sumario = new Sumario(null,null,null);
+  sumario = new Sumario(null,null,null,null,null);
   message: {};
   classCss: {};
   contaId: string;

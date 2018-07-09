@@ -31,7 +31,7 @@
                   <div class="col-xs-3">
                         <div class="small-box bg-yellow">
                            <div class="inner">
-                               <h3 id="debito">{{ sumario.pendente }}</h3>
+                               <h3 class="pendente">{{ sumario.pendente }}</h3>
                                <p>Pendente</p>
                            </div>
                            <div class="icon">
@@ -52,7 +52,6 @@
                   </div>
             </div>
         </div>
-        
         
     </div>
 </div>
@@ -184,6 +183,42 @@
                 </div>
                 <div class="box-body">
                         <div class="row">
+                            <div class="col-xs-3">
+                                <div class="bg-green">
+                                   <div class="inner">
+                                       <h3 id="credito">{{ sumario.credito }}</h3>
+                                       <p>Total créditos</p>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="col-xs-3">
+                                 <div class="bg-red">
+                                    <div class="inner">
+                                        <h3 id="debito">{{ sumario.pago }}</h3>
+                                        <p>Pago</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-xs-3">
+                                    <div class="bg-yellow">
+                                       <div class="inner">
+                                           <h3 class="pendente">{{ sumario.pendente }}</h3>
+                                           <p>Pendente</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              <div class="col-xs-3">
+                                 <div class="bg-blue">
+                                    <div class="inner">
+                                        <h3 id="saldo">{{ sumario.saldo }}</h3>
+                                        <p>Saldo</p>
+                                    </div>
+                                 </div>
+                              </div>
+                        </div>
+                </div>
+                <div class="box-body">
+                        <div class="row">
                             <div class="col-xs-12">
                                 <table class="table table-bordered">
                                   <tr>
@@ -244,9 +279,9 @@
                                      </td>
                                   </tr>
                                 </table>
-                              </div>
+                            </div>
                         </div>
-                    </div>
+                </div>
         </div>              
         
         <div class="box-footer">
