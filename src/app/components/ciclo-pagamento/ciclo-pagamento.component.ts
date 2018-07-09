@@ -241,6 +241,7 @@ export class CicloPagamentoComponent implements OnInit {
       })
 
       obj.debitos.forEach(function(obj, value){
+        obj.data = "2018-07-09";
         debitos.push(obj);
       })
       
