@@ -1,3 +1,4 @@
+import { DebitoDescricao } from './../../model/debitoDescricao.model';
 import { Conta } from './../../model/conta.model';
 import { Ciclo } from './../../model/ciclo.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -6,7 +7,6 @@ import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { ActivatedRoute } from '@angular/router';
 import { Sumario } from '../../model/sumario.model';
 import { DebitoDTO } from '../../model/debitoDTO';
-import { DebitoDescricao } from '../../model/debitoDescricao.model';
 import { DebitoDescricaoService } from '../../services/debito-descricao.service';
 
 
@@ -25,7 +25,7 @@ export class CicloPagamentoComponent implements OnInit {
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
-  sumario = new Sumario(null,null,null); 
+  sumario = new Sumario(null,null,null,null,null); 
   contaId:string;
   
   constructor(private cicloService: CicloPagamentoService,
@@ -46,7 +46,6 @@ export class CicloPagamentoComponent implements OnInit {
          this.contaId = params['contaId'];
        
     });
-      this.findAllDebitodescricoes();
       this.createNewCicle();
     }
   }
@@ -81,21 +80,24 @@ export class CicloPagamentoComponent implements OnInit {
   }
 
   createNewCicle(){
+    let debitos = [{"descricao": {id: "0", nome: null}}];
      this.ciclo = new Ciclo('','',null,null);
      this.ciclo.conta = new Conta('','',null);
      this.ciclo.conta.id = this.contaId;
      this.ciclo.id = null;
      this.ciclo.creditos = [{}];
-     this.ciclo.debitos = [new DebitoDTO()];
-
-     this.sumario = new Sumario(null,null,null); 
+     this.ciclo.debitos = debitos as DebitoDTO[];
+     
+     this.sumario = new Sumario(null,null,null,null,null);
+     this.findAllDebitodescricoes(); 
   }
 
   calculadora(){
     this.sumario.credito = 0;
     this.sumario.debito = 0;
     let cred = 0;
-    let deb = 0;
+    let pago = 0;
+    let pendente = 0;
 
     if(this.ciclo != null){
       this.ciclo.creditos.forEach(function({valor}){
@@ -104,12 +106,19 @@ export class CicloPagamentoComponent implements OnInit {
       })
 
       this.ciclo.debitos.forEach(function(obj, value){
-        deb += !obj.valor || isNaN(obj.valor) ? 0 : obj.valor;
+        if(obj.status === "PAGO"){
+          pago += !obj.valor || isNaN(obj.valor) ? 0 : obj.valor;
+        }else if(obj.status === "PENDENTE"){
+          pendente += !obj.valor || isNaN(obj.valor) ? 0 : obj.valor;
+        }
+       
       })
 
       this.sumario.credito = cred;
-      this.sumario.debito = deb;
-      this.sumario.saldo = this.sumario.credito - this.sumario.debito;
+      this.sumario.debito = pago;
+      this.sumario.pago = pago;
+      this.sumario.pendente = pendente;
+      this.sumario.saldo = this.sumario.credito - this.sumario.pago;
       this.formatDouble();
     }
   }
@@ -142,9 +151,19 @@ export class CicloPagamentoComponent implements OnInit {
   }
 
   addDebitos(deb){
-    //console.log("antes" ,ciclo);
-    this.ciclo.debitos.splice(deb + 1, 0, new DebitoDTO());
+    console.log("Add débito" +deb);
+    this.ciclo.debitos.splice(deb + 1, 0, this.item(deb));
+    //console.log(this.debitodescricoes);
   }
+
+  item(deb){
+  var item = new DebitoDTO();
+  var desc = new DebitoDescricao('0','');
+  item.descricao = desc;
+  item.status = "PENDENTE";
+  item.valor = null;
+  return item;
+}
 
   removeDebitos(deb){
     //console.log("antes" ,ciclo);
