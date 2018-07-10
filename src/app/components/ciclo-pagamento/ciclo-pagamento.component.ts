@@ -180,6 +180,19 @@ export class CicloPagamentoComponent implements OnInit {
     this.calculadora();
   }
 
+  dataAtualFormatada(data){
+    var diaa: string;
+    var mess: string;
+   
+    var dia = data.getDate();
+    if (dia.toString().length == 1)
+       diaa = "0"+dia;
+    var mes = data.getMonth()+1;
+    if (mes.toString().length == 1)
+       mess = "0"+mes;
+    var ano = data.getFullYear();  
+    return dia+"/"+mes+"/"+ano;
+}
 
   createOrUpdate(){
     this.ciclo.creditos.shift();
@@ -206,6 +219,27 @@ export class CicloPagamentoComponent implements OnInit {
       })
 
       obj.debitos.forEach(function(obj, value){
+        var data = new Date(obj.data);
+        var diaa: string;
+        var mess: string;
+   
+       var dia = data.getDate();
+       if (dia <= 9){
+        diaa = "0"+dia;
+       }else{
+        diaa = dia.toString();
+       }
+       
+       var mes = data.getMonth()+1;
+       if (mes <= 9){
+        mess = "0"+mes;
+       }else{
+        mess = mes.toString();
+       }
+       
+       var ano = data.getFullYear();  
+     
+       obj.data = ano+"-"+mess+"-"+diaa;
         debitos.push(obj);
       })
       
@@ -218,6 +252,7 @@ export class CicloPagamentoComponent implements OnInit {
        });
     });
   }
+
 
   findById(id: string){
     this.cicloService.findById(id).subscribe((obj: Ciclo) => {
@@ -241,13 +276,33 @@ export class CicloPagamentoComponent implements OnInit {
       })
 
       obj.debitos.forEach(function(obj, value){
-        obj.data = "2018-07-09";
+        var data = new Date(obj.data);
+        var diaa: string;
+        var mess: string;
+   
+       var dia = data.getDate();
+       if (dia <= 9){
+        diaa = "0"+dia;
+       }else{
+        diaa = dia.toString();
+       }
+       
+       var mes = data.getMonth()+1;
+       if (mes <= 9){
+        mess = "0"+mes;
+       }else{
+        mess = mes.toString();
+       }
+       
+       var ano = data.getFullYear();  
+     
+       obj.data = ano+"-"+mess+"-"+diaa;
         debitos.push(obj);
       })
       
       this.ciclo.creditos = creditos;
       this.ciclo.debitos = debitos as  DebitoDTO[];
-      
+    
       this.calculadora();
     },err =>{
        this.showMessage({
@@ -256,8 +311,6 @@ export class CicloPagamentoComponent implements OnInit {
        });
     });
   }
-
-  
 
   private showMessage(message: {type: string, text: string}) : void{
     this.message = message;
