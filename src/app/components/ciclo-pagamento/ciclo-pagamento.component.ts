@@ -36,6 +36,13 @@ export class CicloPagamentoComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {
+      this.contaId = params['contaId'];
+      var saldoAnterior = params['saldoAnterior'];
+       console.log("Ciclo pagamneto saldoAnterior -> " +saldoAnterior);
+     });
+
     let id : string = this.route.snapshot.params['id'];
     if(id != undefined){
       this.findAllDebitodescricoes();
@@ -44,7 +51,7 @@ export class CicloPagamentoComponent implements OnInit {
     }else{
       this.route.queryParams.subscribe(params => {
          this.contaId = params['contaId'];
-       
+      
     });
       this.createNewCicle();
     }

@@ -38,7 +38,19 @@ export class CicloPagamentoListaComponent implements OnInit {
   }
 
   visualizar(id: string){
-      this.router.navigate(['/ciclo-pagamento',id]);
+    var mes = this.ciclos.find(x => x.id === id).mes;
+    var ano = this.ciclos.find(x => x.id === id).ano;
+     var mesAnterior:number;
+     mesAnterior = mes - 1;
+    
+    var saldoAnterior = this.ciclos.filter(x => x.mes === mesAnterior&& x.ano === ano ).map(x => x.saldo);
+    console.log("saldo anterior" +saldoAnterior);
+    var json = JSON.stringify(this.ciclos);
+    this.ciclos.forEach(function(obj, value){
+      console.log("LIsta Ciclo -->> " +obj.nome);
+    })
+    //console.log(json);
+      this.router.navigate(['/ciclo-pagamento',id], {queryParams: {saldoAnterior: saldoAnterior}});
   }
 
   criarNovoCiclo(){
