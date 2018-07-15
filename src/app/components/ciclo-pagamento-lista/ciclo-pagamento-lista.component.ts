@@ -4,6 +4,7 @@ import { CicloPagamentoService } from '../../services/ciclo-pagamento.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Sumario } from '../../model/sumario.model';
 import { NgForm } from '@angular/forms';
+import { Conta } from '../../model/conta.model';
 
 @Component({
   selector: 'app-ciclo-pagamento-lista',
@@ -54,7 +55,19 @@ export class CicloPagamentoListaComponent implements OnInit {
   }
 
   criarNovoCiclo(){
-    this.router.navigate(['/ciclo-pagamento'], {queryParams: {contaId: this.contaId}} );
+    let conta = new Conta('','',null);
+    conta.id = this.contaId;
+    this.ciclo.conta = conta;
+  this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
+    console.log("CREATE NOVO CICLO >>>>>>>>> " ,obj);
+    this.ciclos.push(obj);
+    this.visualizar(obj.id);
+   },err =>{
+     this.showMessage({
+       type: 'error',
+       text: err['error']['errors'][0]
+     });
+  });
 }
 
 clone(cicloId: string){

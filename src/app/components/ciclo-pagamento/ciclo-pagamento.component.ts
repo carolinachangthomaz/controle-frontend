@@ -27,6 +27,8 @@ export class CicloPagamentoComponent implements OnInit {
   ciclo = new Ciclo('','',null,null);
   sumario = new Sumario(null,null,null,null,null,null); 
   contaId:string;
+  mesCicloAnterior:any;
+  anoCicloAnterior:any;
    
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute,
@@ -39,22 +41,17 @@ export class CicloPagamentoComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       this.contaId = params['contaId'];
-      var mesCicloAnterior = params['mesCicloAnterior'];
-      var anoCicloAnterior = params['anoCicloAnterior'];
-       this.getSaldoMesAnterior(mesCicloAnterior,anoCicloAnterior);
+      this.mesCicloAnterior = params['mesCicloAnterior'];
+      this.anoCicloAnterior = params['anoCicloAnterior'];
+      
      });
 
     let id : string = this.route.snapshot.params['id'];
     if(id != undefined){
+      this.getSaldoMesAnterior(this.mesCicloAnterior,this.anoCicloAnterior);
       this.findAllDebitodescricoes();
       this.findById(id);
       
-    }else{
-      this.route.queryParams.subscribe(params => {
-         this.contaId = params['contaId'];
-      
-    });
-      this.createNewCicle();
     }
   }
 
@@ -87,18 +84,6 @@ export class CicloPagamentoComponent implements OnInit {
    });
   }
 
-  createNewCicle(){
-    let debitos = [{"descricao": {id: "0", nome: null}}];
-     this.ciclo = new Ciclo('','',null,null);
-     this.ciclo.conta = new Conta('','',null);
-     this.ciclo.conta.id = this.contaId;
-     this.ciclo.id = null;
-     this.ciclo.creditos = [{}];
-     this.ciclo.debitos = debitos as DebitoDTO[];
-     
-     this.sumario = new Sumario(null,null,null,null,null,null);
-     this.findAllDebitodescricoes(); 
-  }
 
   calculadora(){
     this.sumario.credito = 0;
@@ -324,7 +309,6 @@ export class CicloPagamentoComponent implements OnInit {
       this.ciclo.creditos = creditos;
       this.ciclo.debitos = debitos as  DebitoDTO[];
     
-      //this.getSaldoMesAnterior(obj.mes,obj.ano);
       this.calculadora();
     },err =>{
        this.showMessage({
