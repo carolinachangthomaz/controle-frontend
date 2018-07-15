@@ -4,5 +4,6 @@ export class Sumario{
         public debito: number,
         public pago: number,
         public pendente: number,
-        public saldo:Number){}
+        public saldo:number,
+        public saldoCicloAnterior:number){}
 }

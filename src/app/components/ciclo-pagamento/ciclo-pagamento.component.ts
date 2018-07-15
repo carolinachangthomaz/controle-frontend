@@ -25,9 +25,9 @@ export class CicloPagamentoComponent implements OnInit {
   message: {};
   classCss: {};
   ciclo = new Ciclo('','',null,null);
-  sumario = new Sumario(null,null,null,null,null); 
+  sumario = new Sumario(null,null,null,null,null,null); 
   contaId:string;
-  
+   
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute,
               private debitodescricaoService: DebitoDescricaoService) {
@@ -39,8 +39,9 @@ export class CicloPagamentoComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       this.contaId = params['contaId'];
-      var saldoAnterior = params['saldoAnterior'];
-       console.log("Ciclo pagamneto saldoAnterior -> " +saldoAnterior);
+      var mesCicloAnterior = params['mesCicloAnterior'];
+      var anoCicloAnterior = params['anoCicloAnterior'];
+       this.getSaldoMesAnterior(mesCicloAnterior,anoCicloAnterior);
      });
 
     let id : string = this.route.snapshot.params['id'];
@@ -95,7 +96,7 @@ export class CicloPagamentoComponent implements OnInit {
      this.ciclo.creditos = [{}];
      this.ciclo.debitos = debitos as DebitoDTO[];
      
-     this.sumario = new Sumario(null,null,null,null,null);
+     this.sumario = new Sumario(null,null,null,null,null,null);
      this.findAllDebitodescricoes(); 
   }
 
@@ -125,7 +126,7 @@ export class CicloPagamentoComponent implements OnInit {
       this.sumario.debito = pago;
       this.sumario.pago = pago;
       this.sumario.pendente = pendente;
-      this.sumario.saldo = this.sumario.credito - this.sumario.pago;
+      this.sumario.saldo = this.sumario.saldoCicloAnterior + (this.sumario.credito - this.sumario.pago);
       this.formatDouble();
     }
   }
@@ -252,12 +253,25 @@ export class CicloPagamentoComponent implements OnInit {
       
       this.ciclo.creditos = creditos;
       this.ciclo.debitos = debitos as  DebitoDTO[];
+      location.reload();
      },err =>{
        this.showMessage({
          type: 'error',
          text: err['error']['errors'][0]
        });
     });
+  }
+
+  getSaldoMesAnterior(mes: number, ano:number){
+    this.cicloService.getSaldoMesAnterior(mes,ano).subscribe((obj:number) => {
+      console.log("resposta >>>> " +obj);
+      this.sumario.saldoCicloAnterior = obj;
+    },err =>{
+      this.showMessage({
+        type: 'error',
+        text: err['error']['errors'][0]
+      });
+   });
   }
 
 
@@ -310,6 +324,7 @@ export class CicloPagamentoComponent implements OnInit {
       this.ciclo.creditos = creditos;
       this.ciclo.debitos = debitos as  DebitoDTO[];
     
+      //this.getSaldoMesAnterior(obj.mes,obj.ano);
       this.calculadora();
     },err =>{
        this.showMessage({
@@ -317,6 +332,21 @@ export class CicloPagamentoComponent implements OnInit {
          text: err['error']['errors'][0]
        });
     });
+  }
+
+  selectMesAno(){
+    var mes = document.getElementById("selectMes") as HTMLSelectElement;
+     var mesSelected = parseInt(mes.options[mes.selectedIndex].value);
+     console.log("mesSelecionado -->  " +mesSelected);
+
+     var ano = document.getElementById("selectAno") as HTMLSelectElement;
+     var anoSelected = parseInt(ano.options[ano.selectedIndex].value);
+     console.log("anoSelected -->  " +anoSelected);
+     mesSelected = mesSelected > 1 ? mesSelected - 1 : 12 ;
+     anoSelected = (mesSelected == 1) ? anoSelected - 1 : anoSelected;
+
+     this.getSaldoMesAnterior(mesSelected, anoSelected);
+     this.calculadora();
   }
 
   private showMessage(message: {type: string, text: string}) : void{
