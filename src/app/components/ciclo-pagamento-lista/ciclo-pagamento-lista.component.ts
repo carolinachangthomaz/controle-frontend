@@ -58,6 +58,7 @@ export class CicloPagamentoListaComponent implements OnInit {
     let conta = new Conta('','',null);
     conta.id = this.contaId;
     this.ciclo.conta = conta;
+    document.getElementById("fechar").click();
   this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
     console.log("CREATE NOVO CICLO >>>>>>>>> " ,obj);
     this.ciclos.push(obj);
