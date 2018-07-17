@@ -39,11 +39,7 @@ export class CicloPagamentoListaComponent implements OnInit {
   }
 
   visualizar(id: string){
-    var mes = this.ciclos.find(x => x.id === id).mes;
-    var ano = this.ciclos.find(x => x.id === id).ano;
-     mes = mes > 1 ? mes - 1 : 12 ;
-     ano = (mes == 1) ? ano - 1 : ano;
-    
+   
     // var saldoAnterior = this.ciclos.filter(x => x.mes === mesAnterior&& x.ano === ano ).map(x => x.saldo);
     // console.log("saldo anterior" +saldoAnterior);
     // var json = JSON.stringify(this.ciclos);
@@ -51,7 +47,7 @@ export class CicloPagamentoListaComponent implements OnInit {
     //   console.log("LIsta Ciclo -->> " +obj.nome);
     // })
     //console.log(json);
-      this.router.navigate(['/ciclo-pagamento',id], {queryParams: {mesCicloAnterior: mes, anoCicloAnterior: ano}});
+      this.router.navigate(['/ciclo-pagamento',id]);
   }
 
   criarNovoCiclo(){
@@ -103,7 +99,7 @@ cloneCreate(){
         });
         credito +=  key.totalCreditos;
         //debito +=  key.totalDebitos;
-        saldo =  credito - debito;
+        saldo =  key.saldo;
         console.log("saldo " +saldo);
       })
 
@@ -122,7 +118,6 @@ cloneCreate(){
       let debitos = 0;
       //this.ciclos = response;
       response.forEach(function(key,index){
-        key.saldo += saldoAnterior;
         debitos = 0;
         key.debitos.forEach(function(obj,index){
           if(obj.status === "PAGO"){
@@ -132,7 +127,6 @@ cloneCreate(){
         });
         key.totalDebitos = debitos;
         ciclos.push(key);
-        saldoAnterior = key.saldo;
       })
       console.log(ciclos);
       this.ciclos = ciclos as Ciclo[];

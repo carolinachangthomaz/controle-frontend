@@ -25,10 +25,6 @@ export class CicloPagamentoService {
     return this.http.post(`${APP_CONFIG.baseUrl}/ciclos/clone`, ciclo);
   }
 
-  getSaldoMesAnterior(mes: number, ano:number){
-    return this.http.get(`${APP_CONFIG.baseUrl}/ciclos?mes=${mes}&ano=${ano}`);
-  }
-
   findById(id: string){
     return this.http.get(`${APP_CONFIG.baseUrl}/ciclos/${id}`);
   }
