@@ -107,12 +107,13 @@ export class CicloPagamentoComponent implements OnInit {
       this.sumario.debito = pago;
       this.sumario.pago = pago;
       this.sumario.pendente = pendente;
+      
       if(this.sumario.credito == 0){
-        this.sumario.saldo = (this.saldoAnterior) - (this.sumario.pago);
+        this.sumario.saldo = (this.saldoAnterior) + (this.sumario.pago);
       }else if(this.sumario.credito < this.sumario.pago){
-        this.sumario.saldo = (this.saldoAnterior) - (this.sumario.pago - this.sumario.credito);
+        this.sumario.saldo = (this.saldoAnterior) + (this.sumario.pago - this.sumario.credito);
       }else{
-        this.sumario.saldo = (this.saldoAnterior) - (this.sumario.credito - this.sumario.pago);
+        this.sumario.saldo = (this.saldoAnterior) + (this.sumario.credito - this.sumario.pago);
       }
      
       this.formatDouble();
@@ -122,7 +123,7 @@ export class CicloPagamentoComponent implements OnInit {
   addCreditos(cred){
     //console.log("antes" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, {});
-    //console.log("depois" ,this.ciclo.creditos);
+    this.calculadora();
   }
 
   removeCreditos(cred){
@@ -316,11 +317,18 @@ export class CicloPagamentoComponent implements OnInit {
        
       })
     
-      this.saldoAnterior = obj.saldo ;
       this.sumario.credito = cred;
       this.sumario.pago = pago;
       this.sumario.pendente = pendente;
+      if(cred == 0){
+        this.saldoAnterior = (obj.saldo) - (pago);
+      }else if(cred < pago){
+        this.saldoAnterior = (obj.saldo) - (pago - cred);
+      }else{
+        this.saldoAnterior = (obj.saldo) - (cred - pago);
+      }
       this.sumario.saldo = obj.saldo;
+      console.log("saldoAnterior -->  " +this.saldoAnterior);
       //this.calculadora();
     },err =>{
        this.showMessage({

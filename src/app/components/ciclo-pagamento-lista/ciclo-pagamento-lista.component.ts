@@ -116,9 +116,16 @@ cloneCreate(){
       let  ciclos = [];
       let saldoAnterior = 0;
       let debitos = 0;
+      let creditos = 0;
       //this.ciclos = response;
       response.forEach(function(key,index){
         debitos = 0;
+        creditos = 0;
+
+        key.creditos.forEach(function(obj,index){
+          creditos += !obj.valor || isNaN(obj.valor) ? 0 : obj.valor;
+        });
+
         key.debitos.forEach(function(obj,index){
           if(obj.status === "PAGO"){
             //console.log("mes " +obj.status+ " valor " +obj.valor);
@@ -126,6 +133,11 @@ cloneCreate(){
           }
         });
         key.totalDebitos = debitos;
+        key.totalCreditos = creditos;
+        if(key.saldo == 0){
+          key.saldo = key.saldo - (creditos - debitos);
+        }
+       
         ciclos.push(key);
       })
       console.log(ciclos);
