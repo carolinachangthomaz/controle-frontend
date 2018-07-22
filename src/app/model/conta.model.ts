@@ -4,9 +4,9 @@ import { ClienteDTO } from "./clienteDTO.model";
 export class Conta{
     id: string;
     nome: string;
-    saldo: Number;
+    saldo: number;
     clienteDTO: ClienteDTO;
     
-constructor(id: string, nome: string,saldo: Number){}    
+constructor(id: string, nome: string,saldo: number){}    
 
 }
