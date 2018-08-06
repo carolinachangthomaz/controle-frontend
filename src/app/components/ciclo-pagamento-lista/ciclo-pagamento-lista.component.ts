@@ -86,8 +86,7 @@ cloneCreate(){
   calculadora(){
     var credito:number = 0;
     let debito = 0;
-    let saldo = 0;
-
+  
     if(this.ciclos.length >= 0){
       this.ciclos.forEach(function(key,index){
         //console.log("mes " +key.nome);
@@ -99,14 +98,10 @@ cloneCreate(){
         });
         credito +=  key.totalCreditos;
         //debito +=  key.totalDebitos;
-        saldo =  key.saldo;
-        console.log("saldo " +saldo);
       })
 
       this.sumario.credito = credito;
       this.sumario.debito = debito;
-      this.sumario.saldo = saldo;
-      //console.log(" sumario.saldo " + this.sumario.saldo);
       this.formatDouble();
     }
   }
@@ -134,15 +129,14 @@ cloneCreate(){
         });
         key.totalDebitos = debitos;
         key.totalCreditos = creditos;
-        if(key.saldo == 0){
-          key.saldo = key.saldo - (creditos - debitos);
-        }
+        key.saldo = key.saldo == null ? 0 : key.saldo;
        
         ciclos.push(key);
       })
       console.log(ciclos);
       this.ciclos = ciclos as Ciclo[];
-     this.calculadora();
+       
+      //this.calculadora();
     },err =>{
        this.showMessage({
          type: 'error',

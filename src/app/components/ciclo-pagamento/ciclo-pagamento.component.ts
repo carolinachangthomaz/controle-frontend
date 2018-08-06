@@ -107,22 +107,15 @@ export class CicloPagamentoComponent implements OnInit {
       this.sumario.debito = pago;
       this.sumario.pago = pago;
       this.sumario.pendente = pendente;
-      
-      if(this.sumario.credito == 0){
-        this.sumario.saldo = (this.ciclo.conta.saldo) + (this.sumario.pago);
-      }else if(this.sumario.credito < this.sumario.pago){
-        this.sumario.saldo = (this.ciclo.conta.saldo) + (this.sumario.pago - this.sumario.credito);
-      }else{
-        this.sumario.saldo = (this.ciclo.conta.saldo) + (this.sumario.credito - this.sumario.pago);
-      }
-     
+          
       this.formatDouble();
     }
   }
 
   addCreditos(cred){
-    //console.log("antes" ,cred);
+    console.log("addCreditos" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, {});
+    this.sumario.saldo += cred.valor;
     this.calculadora();
   }
 
@@ -133,6 +126,7 @@ export class CicloPagamentoComponent implements OnInit {
       var index = this.ciclo.creditos.indexOf(cred);
       if (index > -1) {
         this.ciclo.creditos.splice(index, 1);
+        this.sumario.saldo -= cred.valor;
         this.calculadora();
       }
     }  
@@ -149,7 +143,7 @@ export class CicloPagamentoComponent implements OnInit {
   addDebitos(deb){
     console.log("Add débito" +deb);
     this.ciclo.debitos.splice(deb + 1, 0, this.item(deb));
-    //console.log(this.debitodescricoes);
+    this.sumario.saldo -= deb.valor;
   }
 
   item(deb){
@@ -166,6 +160,7 @@ export class CicloPagamentoComponent implements OnInit {
     var index = this.ciclo.debitos.indexOf(deb);
     if (index > -1) {
       this.ciclo.debitos.splice(index, 1);
+      this.sumario.saldo += deb.valor;
       this.calculadora();
     }
   }
@@ -193,6 +188,7 @@ export class CicloPagamentoComponent implements OnInit {
   createOrUpdate(){
     this.ciclo.creditos.shift();
     this.ciclo.debitos.shift();
+    this.ciclo.conta.saldo = this.sumario.saldo;
     this.cicloService.createOrUpdate(this.ciclo).subscribe((obj: Ciclo) => {
       console.log("FUNCIONOU!createorupdate >>>>>>>>> " ,obj);
       let creditos = [{}];
@@ -321,9 +317,9 @@ export class CicloPagamentoComponent implements OnInit {
       this.sumario.pago = pago;
       this.sumario.pendente = pendente;
      
-      this.sumario.saldo = obj.conta.saldo;
+      this.sumario.saldo = obj.conta.saldo == null ? 0 : obj.conta.saldo;
       console.log("Conta Saldo -->  " +this.sumario.saldo);
-      //this.calculadora();
+      this.calculadora();
     },err =>{
        this.showMessage({
          type: 'error',
