@@ -28,6 +28,7 @@ export class CicloPagamentoComponent implements OnInit {
   sumario = new Sumario(null,null,null,null,null,null); 
   contaId:string;
   saldoAnterior: number;
+  changeStatus = false;
   
   constructor(private cicloService: CicloPagamentoService,
               private route: ActivatedRoute,
@@ -113,21 +114,23 @@ export class CicloPagamentoComponent implements OnInit {
   }
 
   addCreditos(cred){
-    console.log("addCreditos" ,cred);
+    
     this.ciclo.creditos.splice(cred + 1, 0, {});
     this.sumario.saldo += cred.valor;
-    this.calculadora();
+    this.sumario.credito += cred.valor;
+    console.log("addCreditos" ,cred);
   }
 
   removeCreditos(cred){
-    //console.log("antes" ,cred);
+    
     if(this.ciclo.creditos.length > 1){
       //this.ciclo.creditos.splice(cred,1);
       var index = this.ciclo.creditos.indexOf(cred);
       if (index > -1) {
         this.ciclo.creditos.splice(index, 1);
         this.sumario.saldo -= cred.valor;
-        this.calculadora();
+        this.sumario.credito -= cred.valor;
+        console.log("remove cred " ,cred);
       }
     }  
   }
@@ -136,14 +139,16 @@ export class CicloPagamentoComponent implements OnInit {
   cloneCreditos(cred){
     //console.log("antes" ,cred);
     this.ciclo.creditos.splice(cred + 1, 0, cred);
-    this.calculadora();
-    //console.log("depois" ,this.ciclo.creditos);
+    console.log("clone cred " ,cred);
   }
 
   addDebitos(deb){
-    console.log("Add débito" +deb);
     this.ciclo.debitos.splice(deb + 1, 0, this.item(deb));
-    this.sumario.saldo -= deb.valor;
+    console.log("Add débito" +deb);
+    if(!this.changeStatus){
+      this.verificaStatusDebito('add',deb);
+    }
+    
   }
 
   item(deb){
@@ -160,15 +165,52 @@ export class CicloPagamentoComponent implements OnInit {
     var index = this.ciclo.debitos.indexOf(deb);
     if (index > -1) {
       this.ciclo.debitos.splice(index, 1);
-      this.sumario.saldo += deb.valor;
-      this.calculadora();
+      console.log("remove débito" +deb);
+      if(!this.changeStatus){
+        this.verificaStatusDebito('rem',deb);
+      }
     }
+  }
+
+  verificaStatusDebito(tipo,deb){
+    if(tipo == 'add' && deb.status == 'PAGO'){
+      this.sumario.saldo -= deb.valor;
+      this.sumario.debito += deb.valor;
+      this.sumario.pago += deb.valor;
+      
+    }else if (tipo == 'rem' && deb.status == 'PAGO'){
+      this.sumario.saldo += deb.valor;
+      this.sumario.debito -= deb.valor;
+    }else if (tipo == 'add' && deb.status == 'PENDENTE'){
+      this.sumario.pendente += deb.valor;
+    }else if (tipo == 'rem' && deb.status == 'PENDENTE'){
+      this.sumario.pendente -= deb.valor;
+    }
+    this.formatDouble();
+  }
+
+  statusDebito(deb){
+    
+    if (deb.status == 'PENDENTE'){
+      this.sumario.saldo += deb.valor;
+      this.sumario.debito -= deb.valor;
+      this.sumario.pago -= deb.valor;
+      this.sumario.pendente += deb.valor;
+      this.changeStatus = true;
+    }else if(deb.status == 'PAGO'){
+      this.sumario.saldo -= deb.valor;
+      this.sumario.debito += deb.valor;
+      this.sumario.pago += deb.valor;
+      this.sumario.pendente -= deb.valor;
+      this.changeStatus = true;
+    }
+    this.formatDouble();
   }
   
   cloneDebitos(deb){
     //console.log("antes" ,ciclo);
     this.ciclo.creditos.splice(deb + 1, 0, deb);
-    this.calculadora();
+  
   }
 
   dataAtualFormatada(data){
@@ -319,7 +361,7 @@ export class CicloPagamentoComponent implements OnInit {
      
       this.sumario.saldo = obj.conta.saldo == null ? 0 : obj.conta.saldo;
       console.log("Conta Saldo -->  " +this.sumario.saldo);
-      this.calculadora();
+    
     },err =>{
        this.showMessage({
          type: 'error',
@@ -339,7 +381,6 @@ export class CicloPagamentoComponent implements OnInit {
      mesSelected = mesSelected > 1 ? mesSelected - 1 : 12 ;
      anoSelected = (mesSelected == 1) ? anoSelected - 1 : anoSelected;
 
-     this.calculadora();
   }
 
   private showMessage(message: {type: string, text: string}) : void{
@@ -358,9 +399,12 @@ export class CicloPagamentoComponent implements OnInit {
   }
 
   formatDouble() {
-    document.getElementById("credito").innerHTML = this.sumario.credito.toFixed(2);
-     document.getElementById("debito").innerHTML = this.sumario.debito.toFixed(2);
-     document.getElementById("saldo").innerHTML = this.sumario.saldo.toFixed(2);
+    document.getElementsByClassName("credito")[0].innerHTML = this.sumario.credito.toFixed(2);
+    document.getElementsByClassName("credito")[1].innerHTML = this.sumario.credito.toFixed(2);
+     document.getElementsByClassName("debito")[0].innerHTML = this.sumario.debito.toFixed(2);
+     document.getElementsByClassName("debito")[1].innerHTML = this.sumario.debito.toFixed(2);
+     document.getElementsByClassName("saldo")[0].innerHTML = this.sumario.saldo.toFixed(2);
+     document.getElementsByClassName("saldo")[1].innerHTML = this.sumario.saldo.toFixed(2);
      document.getElementsByClassName("pendente")[0].innerHTML = this.sumario.pendente.toFixed(2);
      document.getElementsByClassName("pendente")[1].innerHTML = this.sumario.pendente.toFixed(2);
  }
